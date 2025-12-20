@@ -1,348 +1,183 @@
-# Order Processing System
+# 📚 Online Bookstore System
 
-A full-stack web application for managing orders, customers, products, suppliers, and inventory.
+A full-stack web application for an online bookstore with customer shopping features and admin management capabilities.
 
-## 🚀 Technology Stack
+## 🌟 Features
+
+### Customer Features
+- **Browse Books**: View all available books with category filtering (Science, Art, Religion, History, Geography)
+- **Shopping Cart**: Add books to cart, update quantities, remove items
+- **Checkout**: Secure checkout with credit card validation (16 digits)
+- **Order History**: View past orders and their status
+
+### Admin Features
+- **Dashboard**: Overview with statistics, top books, and top customers
+- **Manage Books**: Add, edit, delete books with ISBN, title, authors, publisher, price, stock
+- **Publisher Orders**: Place orders to publishers when stock is low, confirm received orders
+- **Customer Orders**: View and manage customer orders, update order status
+- **Reports**:
+  - Monthly sales report (previous month)
+  - Daily sales report (by date)
+  - Top 5 customers by purchases
+  - Top 10 selling books
+  - Book order count by ISBN
+
+### Database Features
+- **Automatic Stock Management**: Trigger prevents negative stock quantities
+- **Auto-Reorder**: Trigger automatically creates publisher orders when stock falls below threshold
+
+## 🛠️ Tech Stack
 
 ### Backend
-- **Java 17** - Programming language
-- **Spring Boot 3.2.0** - Backend framework
-- **Spring Data JPA** - Database ORM
-- **MySQL 8.0+** - Database
-- **Maven** - Build tool
-- **Lombok** - Reduce boilerplate code
+- **Java 17**
+- **Spring Boot 3.2.0**
+- **Spring Data JPA** with Hibernate
+- **Lombok** for boilerplate reduction
+- **MySQL** database
 
 ### Frontend
-- **React 18** - Frontend framework
-- **React Router 6** - Client-side routing
-- **Bootstrap 5** - CSS framework
-- **React-Bootstrap** - Bootstrap components for React
-- **Axios** - HTTP client
-- **React-Toastify** - Toast notifications
-- **React-Icons** - Icon library
+- **React 18**
+- **React Router** for navigation
+- **Axios** for API calls
+- **CSS3** with responsive design
+
+## 📋 Prerequisites
+
+- **Java 17** or higher
+- **Maven 3.8+**
+- **Node.js 16+** and npm
+- **MySQL 8.0+** (via XAMPP or standalone)
+
+## 🚀 Getting Started
+
+### 1. Database Setup
+
+1. Start MySQL (via XAMPP or MySQL service)
+2. Open MySQL console or phpMyAdmin
+3. Run the database schema:
+```sql
+-- Execute the contents of database/bookstore_schema.sql
+SOURCE C:/path/to/order-processing-system/database/bookstore_schema.sql;
+```
+
+This creates:
+- `online_bookstore` database
+- All required tables with proper relationships
+- Triggers for stock management
+- Stored procedures for reports
+- Sample data for testing
+
+### 2. Backend Setup
+
+```bash
+cd backend
+
+# Install dependencies and build
+mvn clean install
+
+# Run the application
+mvn spring-boot:run
+```
+
+The backend runs at: `http://localhost:8080`
+
+### 3. Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+The frontend runs at: `http://localhost:3000`
+
+## 👥 Demo Accounts
+
+After running the database schema, these accounts are available:
+
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | admin | admin123 |
+| Customer | john | pass123 |
+| Customer | jane | pass456 |
 
 ## 📁 Project Structure
 
 ```
 order-processing-system/
-├── database/           # SQL scripts
-│   ├── schema.sql      # Database schema with sample data
-│   └── README.md       # Database setup instructions
-├── backend/            # Spring Boot backend
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/orderprocessing/
-│   │   │   │   ├── config/         # Configuration classes
-│   │   │   │   ├── controller/     # REST controllers
-│   │   │   │   ├── dto/            # Data transfer objects
-│   │   │   │   ├── exception/      # Exception handlers
-│   │   │   │   ├── model/          # JPA entities
-│   │   │   │   ├── repository/     # Spring Data repositories
-│   │   │   │   ├── service/        # Business logic
-│   │   │   │   └── OrderProcessingApplication.java
-│   │   │   └── resources/
-│   │   │       └── application.properties
-│   │   └── test/
-│   └── pom.xml
-├── frontend/           # React frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   ├── App.js
-│   │   ├── index.js
-│   │   └── index.css
-│   └── package.json
-└── README.md
+├── backend/
+│   └── src/main/java/com/order/
+│       ├── controller/     # REST API controllers
+│       ├── dto/            # Data Transfer Objects
+│       ├── model/          # JPA entities
+│       ├── repository/     # Spring Data repositories
+│       └── service/        # Business logic
+├── frontend/
+│   └── src/
+│       ├── components/     # Reusable components (Header)
+│       ├── pages/          # Page components
+│       └── services/       # API service layer
+└── database/
+    └── bookstore_schema.sql  # Complete database schema
 ```
 
-## 📋 Prerequisites
+## 🔌 API Endpoints
 
-Before you begin, ensure you have the following installed:
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/logout/{userId}` - User logout (clears cart)
 
-1. **Java JDK 17+**
-   - Download: https://adoptium.net/
-   - Verify: `java -version`
+### Books
+- `GET /api/books` - Get all books
+- `GET /api/books/{id}` - Get book by ID
+- `GET /api/books/category/{category}` - Get books by category
+- `POST /api/books` - Create book (Admin)
+- `PUT /api/books/{id}` - Update book (Admin)
+- `DELETE /api/books/{id}` - Delete book (Admin)
 
-2. **Maven 3.8+**
-   - Download: https://maven.apache.org/download.cgi
-   - Verify: `mvn -version`
-
-3. **Node.js 18+ & npm**
-   - Download: https://nodejs.org/
-   - Verify: `node -v` and `npm -v`
-
-4. **MySQL Server 8.0+**
-   - Download: https://dev.mysql.com/downloads/mysql/
-   - Verify: `mysql --version`
-
-## 🔧 Installation & Setup
-
-### Step 1: Clone the Repository
-
-```bash
-git clone <repository-url>
-cd order-processing-system
-```
-
-### Step 2: Set Up the Database
-
-1. Open MySQL command line or MySQL Workbench
-2. Run the schema file:
-
-```bash
-# Using MySQL command line
-mysql -u root -p < database/schema.sql
-```
-
-Or in MySQL Workbench:
-- Go to File > Run SQL Script
-- Select `database/schema.sql`
-- Click Run
-
-### Step 3: Configure Backend
-
-1. Open `backend/src/main/resources/application.properties`
-2. Update the database credentials:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/order_processing_system
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD_HERE
-```
-
-### Step 4: Start the Backend
-
-```bash
-cd backend
-mvn spring-boot:run
-```
-
-The backend will start on: **http://localhost:8080/api**
-
-### Step 5: Install Frontend Dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-### Step 6: Start the Frontend
-
-```bash
-npm start
-```
-
-The frontend will start on: **http://localhost:3000**
-
-## 📚 API Endpoints
-
-### Customers
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/customers` | Get all customers |
-| GET | `/api/customers/{id}` | Get customer by ID |
-| GET | `/api/customers/search?keyword=` | Search customers |
-| POST | `/api/customers` | Create customer |
-| PUT | `/api/customers/{id}` | Update customer |
-| DELETE | `/api/customers/{id}` | Delete customer |
-
-### Suppliers
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/suppliers` | Get all suppliers |
-| GET | `/api/suppliers/{id}` | Get supplier by ID |
-| GET | `/api/suppliers/search?keyword=` | Search suppliers |
-| POST | `/api/suppliers` | Create supplier |
-| PUT | `/api/suppliers/{id}` | Update supplier |
-| DELETE | `/api/suppliers/{id}` | Delete supplier |
-
-### Products
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/products` | Get all products |
-| GET | `/api/products/{id}` | Get product by ID |
-| GET | `/api/products/search?keyword=` | Search products |
-| GET | `/api/products/category/{category}` | Get by category |
-| GET | `/api/products/categories` | Get all categories |
-| POST | `/api/products` | Create product |
-| PUT | `/api/products/{id}` | Update product |
-| DELETE | `/api/products/{id}` | Delete product |
+### Shopping Cart
+- `GET /api/cart/{userId}` - Get user's cart
+- `POST /api/cart/{userId}/items` - Add item to cart
+- `PUT /api/cart/{userId}/items/{itemId}` - Update cart item
+- `DELETE /api/cart/{userId}/items/{itemId}` - Remove cart item
 
 ### Orders
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/orders` | Get all orders |
-| GET | `/api/orders/{id}` | Get order by ID |
-| GET | `/api/orders/customer/{customerId}` | Get orders by customer |
-| GET | `/api/orders/status/{status}` | Get orders by status |
-| GET | `/api/orders/{id}/items` | Get order items |
-| POST | `/api/orders` | Create order |
-| PUT | `/api/orders/{id}/status?status=` | Update order status |
-| DELETE | `/api/orders/{id}` | Delete order |
+- `GET /api/orders` - Get all orders (Admin)
+- `GET /api/orders/user/{userId}` - Get user's orders
+- `POST /api/orders/checkout` - Checkout cart
+- `PUT /api/orders/{id}/status` - Update order status (Admin)
 
-### Inventory
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/inventory` | Get all inventory |
-| GET | `/api/inventory/{id}` | Get inventory by ID |
-| GET | `/api/inventory/product/{productId}` | Get by product |
-| GET | `/api/inventory/low-stock` | Get low stock items |
-| GET | `/api/inventory/out-of-stock` | Get out of stock |
-| POST | `/api/inventory/restock/{productId}?quantity=` | Restock product |
-| PUT | `/api/inventory/{id}` | Update inventory |
+### Publisher Orders
+- `GET /api/book-orders` - Get all publisher orders
+- `POST /api/book-orders` - Create publisher order
+- `PUT /api/book-orders/{id}/confirm` - Confirm order received
 
-## 🎯 Features
+### Reports
+- `GET /api/reports/monthly-sales` - Monthly sales report
+- `GET /api/reports/daily-sales?date=YYYY-MM-DD` - Daily sales
+- `GET /api/reports/top-customers` - Top 5 customers
+- `GET /api/reports/top-books` - Top 10 selling books
+- `GET /api/reports/book-order-count/{isbn}` - Order count by ISBN
 
-### Dashboard
-- Overview of system statistics
-- Total customers, products, orders, suppliers
-- Low stock alerts
-- Pending orders count
-- Recent orders list
+## 📝 Book Categories
 
-### Customer Management
-- Add, edit, delete customers
-- Search functionality
-- View customer details
+- Science
+- Art
+- Religion
+- History
+- Geography
 
-### Supplier Management
-- Add, edit, delete suppliers
-- Search functionality
-- View supplier details
+## 🔒 Security Notes
 
-### Product Management
-- Add, edit, delete products
-- Assign suppliers to products
-- View stock levels
-- Search and filter products
+- Passwords should be hashed in production (currently plain text for demo)
+- Credit card validation is client-side only (integrate payment gateway for production)
+- Add JWT authentication for production use
 
-### Order Management
-- Create new orders with multiple items
-- View order details and items
-- Update order status (Pending → Processing → Shipped → Delivered)
-- Cancel orders (restores inventory)
-- Automatic inventory deduction
+## 📄 License
 
-### Inventory Management
-- View stock levels for all products
-- Filter by stock status (All, Low Stock, Out of Stock)
-- Restock products
-- Update reorder levels
-- Stock status indicators
-
-## 📦 Dependencies
-
-### Backend (Maven Dependencies)
-
-```xml
-<dependencies>
-    <!-- Spring Boot Starters -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-    
-    <!-- MySQL Connector -->
-    <dependency>
-        <groupId>com.mysql</groupId>
-        <artifactId>mysql-connector-j</artifactId>
-    </dependency>
-    
-    <!-- Lombok -->
-    <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-    </dependency>
-</dependencies>
-```
-
-### Frontend (npm Dependencies)
-
-```json
-{
-  "dependencies": {
-    "axios": "^1.6.2",
-    "bootstrap": "^5.3.2",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.9.1",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.12.0",
-    "react-router-dom": "^6.21.0",
-    "react-toastify": "^9.1.3"
-  }
-}
-```
-
-## 🛠️ Troubleshooting
-
-### Backend Issues
-
-**Port 8080 already in use:**
-```bash
-# Kill process on port 8080 (Windows)
-netstat -ano | findstr :8080
-taskkill /PID <PID> /F
-```
-
-**Database connection error:**
-- Ensure MySQL is running
-- Check credentials in application.properties
-- Verify database exists
-
-**Maven build fails:**
-```bash
-mvn clean install -DskipTests
-```
-
-### Frontend Issues
-
-**npm install fails:**
-```bash
-# Clear npm cache
-npm cache clean --force
-rm -rf node_modules
-npm install
-```
-
-**API connection error:**
-- Ensure backend is running on port 8080
-- Check CORS configuration
-- Verify API URL in services/api.js
-
-## 🔒 Environment Variables
-
-For production, use environment variables:
-
-**Backend:**
-```bash
-export DB_URL=jdbc:mysql://localhost:3306/order_processing_system
-export DB_USERNAME=root
-export DB_PASSWORD=yourpassword
-```
-
-**Frontend:**
-```bash
-export REACT_APP_API_URL=http://localhost:8080/api
-```
-
-## 📝 License
-
-This project is created for educational purposes as part of a Database course project.
-
-## 👥 Contributors
-
-- Mohamed
-
-## 📞 Support
-
-For issues and questions, please create an issue in the repository.
+This project is for educational purposes.

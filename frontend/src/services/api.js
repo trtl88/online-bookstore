@@ -9,60 +9,89 @@ const api = axios.create({
   },
 });
 
-// Customer API
-export const customerApi = {
-  getAll: () => api.get('/customers'),
-  getById: (id) => api.get(`/customers/${id}`),
-  search: (keyword) => api.get(`/customers/search?keyword=${keyword}`),
-  create: (customer) => api.post('/customers', customer),
-  update: (id, customer) => api.put(`/customers/${id}`, customer),
-  delete: (id) => api.delete(`/customers/${id}`),
+// Auth API
+export const authApi = {
+  login: (credentials) => api.post('/auth/login', credentials),
+  register: (userData) => api.post('/auth/register', userData),
+  logout: (userId) => api.post(`/auth/logout/${userId}`),
 };
 
-// Supplier API
-export const supplierApi = {
-  getAll: () => api.get('/suppliers'),
-  getById: (id) => api.get(`/suppliers/${id}`),
-  search: (keyword) => api.get(`/suppliers/search?keyword=${keyword}`),
-  create: (supplier) => api.post('/suppliers', supplier),
-  update: (id, supplier) => api.put(`/suppliers/${id}`, supplier),
-  delete: (id) => api.delete(`/suppliers/${id}`),
+// User API
+export const userApi = {
+  getAll: () => api.get('/users'),
+  getById: (id) => api.get(`/users/${id}`),
+  getCustomers: () => api.get('/users/customers'),
+  update: (id, user) => api.put(`/users/${id}`, user),
 };
 
-// Product API
-export const productApi = {
-  getAll: () => api.get('/products'),
-  getById: (id) => api.get(`/products/${id}`),
-  search: (keyword) => api.get(`/products/search?keyword=${keyword}`),
-  getByCategory: (category) => api.get(`/products/category/${category}`),
-  getCategories: () => api.get('/products/categories'),
-  create: (product) => api.post('/products', product),
-  update: (id, product) => api.put(`/products/${id}`, product),
-  delete: (id) => api.delete(`/products/${id}`),
+// Book API
+export const bookApi = {
+  getAll: () => api.get('/books'),
+  getById: (id) => api.get(`/books/${id}`),
+  getByIsbn: (isbn) => api.get(`/books/isbn/${isbn}`),
+  getByCategory: (category) => api.get(`/books/category/${category}`),
+  search: (title) => api.get(`/books/search?title=${title}`),
+  getLowStock: () => api.get('/books/low-stock'),
+  getOutOfStock: () => api.get('/books/out-of-stock'),
+  create: (book) => api.post('/books', book),
+  update: (id, book) => api.put(`/books/${id}`, book),
+  updateStock: (id, quantity) => api.patch(`/books/${id}/stock`, { quantity }),
+  delete: (id) => api.delete(`/books/${id}`),
 };
 
-// Inventory API
-export const inventoryApi = {
-  getAll: () => api.get('/inventory'),
-  getById: (id) => api.get(`/inventory/${id}`),
-  getByProductId: (productId) => api.get(`/inventory/product/${productId}`),
-  getLowStock: () => api.get('/inventory/low-stock'),
-  getOutOfStock: () => api.get('/inventory/out-of-stock'),
-  create: (inventory) => api.post('/inventory', inventory),
-  update: (id, inventory) => api.put(`/inventory/${id}`, inventory),
-  restock: (productId, quantity) => api.post(`/inventory/restock/${productId}?quantity=${quantity}`),
+// Author API
+export const authorApi = {
+  getAll: () => api.get('/authors'),
+  getById: (id) => api.get(`/authors/${id}`),
+  create: (author) => api.post('/authors', author),
+  delete: (id) => api.delete(`/authors/${id}`),
 };
 
-// Order API
+// Publisher API
+export const publisherApi = {
+  getAll: () => api.get('/publishers'),
+  getById: (id) => api.get(`/publishers/${id}`),
+  create: (publisher) => api.post('/publishers', publisher),
+  update: (id, publisher) => api.put(`/publishers/${id}`, publisher),
+  delete: (id) => api.delete(`/publishers/${id}`),
+};
+
+// Book Order API (orders from publishers)
+export const bookOrderApi = {
+  getAll: () => api.get('/book-orders'),
+  getById: (id) => api.get(`/book-orders/${id}`),
+  getPending: () => api.get('/book-orders/pending'),
+  getByBook: (bookId) => api.get(`/book-orders/book/${bookId}`),
+  place: (bookId, quantity) => api.post('/book-orders', { bookId, quantity }),
+  confirm: (id) => api.post(`/book-orders/${id}/confirm`),
+  getOrderCount: (bookId) => api.get(`/book-orders/book/${bookId}/count`),
+};
+
+// Shopping Cart API
+export const cartApi = {
+  get: (userId) => api.get(`/cart/${userId}`),
+  addItem: (userId, bookId, quantity) => api.post(`/cart/${userId}/add`, { bookId, quantity }),
+  updateItem: (userId, bookId, quantity) => api.put(`/cart/${userId}/update`, { bookId, quantity }),
+  removeItem: (userId, bookId) => api.delete(`/cart/${userId}/remove/${bookId}`),
+  clear: (userId) => api.delete(`/cart/${userId}/clear`),
+};
+
+// Customer Order API (sales to customers)
 export const orderApi = {
   getAll: () => api.get('/orders'),
   getById: (id) => api.get(`/orders/${id}`),
-  getByCustomerId: (customerId) => api.get(`/orders/customer/${customerId}`),
-  getByStatus: (status) => api.get(`/orders/status/${status}`),
-  getItems: (orderId) => api.get(`/orders/${orderId}/items`),
-  create: (order) => api.post('/orders', order),
-  updateStatus: (id, status) => api.put(`/orders/${id}/status?status=${status}`),
-  delete: (id) => api.delete(`/orders/${id}`),
+  getByUser: (userId) => api.get(`/orders/user/${userId}`),
+  checkout: (userId, checkoutData) => api.post(`/orders/checkout/${userId}`, checkoutData),
+  updateStatus: (id, status) => api.patch(`/orders/${id}/status`, { status }),
+};
+
+// Reports API
+export const reportApi = {
+  getSalesPreviousMonth: () => api.get('/reports/sales/previous-month'),
+  getSalesForDate: (date) => api.get(`/reports/sales/date?date=${date}`),
+  getTop5Customers: () => api.get('/reports/top-customers'),
+  getTop10Books: () => api.get('/reports/top-books'),
+  getBookOrderCount: (bookId) => api.get(`/reports/book-orders/${bookId}`),
 };
 
 export default api;
