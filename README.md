@@ -172,7 +172,63 @@ order-processing-system/
 - History
 - Geography
 
-## 🔒 Security Notes
+## � Docker Deployment
+
+### Quick Start with Docker
+
+Run the entire application with a single command:
+
+```bash
+# Using pre-built images from DockerHub
+docker-compose -f docker-compose.hub.yml up
+
+# Or build locally
+docker-compose up --build
+```
+
+### Docker Images
+
+Pre-built images available on DockerHub:
+- `trtl88/bookstore-backend:latest`
+- `trtl88/bookstore-frontend:latest`
+
+### Docker Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| Frontend | 3000 | React app served via Nginx |
+| Backend | 8080 | Spring Boot REST API |
+| MySQL | 3307 | Database (mapped to avoid conflicts) |
+
+### Docker Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Stop and remove data volumes
+docker-compose down -v
+
+# Rebuild images
+docker-compose up --build
+```
+
+### Docker Files
+
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | Build locally from source |
+| `docker-compose.hub.yml` | Use pre-built DockerHub images |
+| `backend/Dockerfile` | Multi-stage build for Spring Boot |
+| `frontend/Dockerfile` | Multi-stage build for React + Nginx |
+
+## �🔒 Security Notes
 
 - Passwords should be hashed in production (currently plain text for demo)
 - Credit card validation is client-side only (integrate payment gateway for production)
