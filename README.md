@@ -2,6 +2,26 @@
 
 A full-stack web application for an online bookstore with customer shopping features and admin management capabilities.
 
+## 🚀 Quick Start (Docker)
+
+**Requirements:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/trtl88/online-bookstore.git
+cd online-bookstore
+
+# 2. Run with one command
+docker-compose -f docker-compose.hub.yml up
+
+# 3. Open browser: http://localhost:3000
+# Login: admin / admin123
+```
+
+That's it! The entire application runs automatically.
+
+---
+
 ## 🌟 Features
 
 ### Customer Features
