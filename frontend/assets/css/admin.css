@@ -1,0 +1,11 @@
+/* assets/css/admin.css */
+/* Inherit mostly from style.css, but add specific admin table styles */
+.admin-card {
+    border-left: 4px solid var(--primary);
+}
+.sidebar {
+    background: var(--dark);
+    color: white;
+    min-height: 100vh;
+    padding: 2rem;
+}
