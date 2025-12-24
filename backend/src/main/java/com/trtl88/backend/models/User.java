@@ -3,7 +3,7 @@ package com.trtl88.backend.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class User {
+public class User {
 
     
     private String username;
