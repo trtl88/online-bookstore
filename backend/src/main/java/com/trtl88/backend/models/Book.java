@@ -10,11 +10,12 @@ public class Book {
     private double price;
     private Category category;
     private int stockQuantity;
+    private int threshold;
 
 
     public Book(String isbn, String title, List<Author> authors,
                 Publisher publisher, int publicationYear,
-                double price, Category category, int stockQuantity) {
+                double price, Category category, int stockQuantity, int threshold) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
@@ -23,6 +24,7 @@ public class Book {
         this.price = price;
         this.category = category;
         this.stockQuantity = stockQuantity;
+        this.threshold = threshold;
     }
 
     // Getters
@@ -90,5 +92,11 @@ public class Book {
     }
     public boolean isAvailable() {
         return stockQuantity > 0;
+    }
+    public int getThreshold() {
+        return threshold;
+    }
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
 }

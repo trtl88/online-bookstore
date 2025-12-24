@@ -5,24 +5,29 @@ import java.util.List;
 
 public abstract class User {
 
-    private String firstName;
-    private String lastName;
+    
     private String username;
     private String password;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String address;
     private String phoneNumber;
     private String shippingAddress;
+    private boolean isAdmin; 
+
+    // Getters and Setters for all fields...
+
+
     
-    public User(String firstName, String lastName, String username, String password, String email, String address, String phoneNumber, String shippingAddress) {
+    public User(String firstName, String lastName, String username, String password, String email, String phoneNumber, String shippingAddress, boolean isAdmin) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.address = address;
         this.phoneNumber = phoneNumber;
         this.shippingAddress = shippingAddress;
+        this.isAdmin = isAdmin;
     }
 
     // Getters and Setters
@@ -66,13 +71,6 @@ public abstract class User {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -89,54 +87,7 @@ public abstract class User {
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
-
-    // Book search methods
-    public Book findByISBN(String isbn) {
-        for (Book book : books) {
-            if (book.getIsbn().equals(isbn)) {
-                return book;
-            }
-        }
-        return null;
-    }
-
-    public List<Book> findByTitle(String title) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
-                result.add(book);
-            }
-        }
-        return result;
-    }
-
-    public List<Book> findByCategory(String category) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getCategory().equalsIgnoreCase(category)) {
-                result.add(book);
-            }
-        }
-        return result;
-    }
-
-    public List<Book> findByAuthor(String author) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getAuthor().equalsIgnoreCase(author)) {
-                result.add(book);
-            }
-        }
-        return result;
-    }
-
-    public List<Book> findByPublisher(String publisher) {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getPublisher().equalsIgnoreCase(publisher)) {
-                result.add(book);
-            }
-        }
-        return result;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }
