@@ -8,7 +8,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books") // Base URL for all these commands
-@CrossOrigin(origins = "http://localhost:3000") // Allows your Frontend (React/HTML) to talk to this
+// @CrossOrigin(origins = "http://localhost:3000") // Allows your Frontend (React/HTML) to talk to this
+// NEW (Allows your HTML file to connect)
+@CrossOrigin(origins = "*")
 public class BookController {
 
     private final BookService bookService;

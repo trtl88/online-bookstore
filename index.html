@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bookstore Home</title>
+    <style>
+      .book-card {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Online Bookstore</h1>
+
+    <input type="text" id="searchInput" placeholder="Search by title..." />
+    <button onclick="searchBooks()">Search</button>
+
+    <div id="bookList"></div>
+
+    <script>
+      // THE INTEGRATION HAPPENS HERE
+      const API_URL = "http://localhost:8080/api/books";
+
+      // Function 1: Fetch and Display All Books on Load
+      async function loadBooks() {
+        // A. Call the Java Controller
+        const response = await fetch(API_URL);
+
+        // B. Get the JSON data
+        const books = await response.json();
+
+        // C. Show it on the screen
+        displayBooks(books);
+      }
+
+      // Function 2: Search Books
+      async function searchBooks() {
+        const query = document.getElementById("searchInput").value;
+        // Calls: @GetMapping("/search") in your Java Controller
+        const response = await fetch(`${API_URL}/search?query=${query}`);
+        const books = await response.json();
+        displayBooks(books);
+      }
+
+      // Helper: Convert JSON data into HTML
+      function displayBooks(books) {
+        const container = document.getElementById("bookList");
+        container.innerHTML = "";
+
+        if (books.length === 0) {
+          container.innerHTML = "<p>No books found in database.</p>";
+          return;
+        }
+
+        books.forEach((book) => {
+          const div = document.createElement("div");
+          div.className = "book-card";
+
+          // FIX: Check if publisher exists, then get its name
+          const pubName = book.publisher ? book.publisher.name : "Unknown";
+
+          div.innerHTML = `
+            <h3>${book.title}</h3>
+            <p><strong>Category:</strong> ${book.category}</p>
+            <p><strong>Price:</strong> $${book.price}</p>
+            <p><strong>Publisher:</strong> ${pubName}</p> 
+            <p><strong>Stock:</strong> ${book.stockQuantity}</p>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      // Load books as soon as the page opens
+      loadBooks();
+    </script>
+  </body>
+</html>
