@@ -9,10 +9,12 @@ public class Book {
     private int publicationYear;
     private double price;
     private Category category;
+    private int stockQuantity;
+
 
     public Book(String isbn, String title, List<Author> authors,
                 Publisher publisher, int publicationYear,
-                double price, Category category) {
+                double price, Category category, int stockQuantity) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
@@ -20,6 +22,7 @@ public class Book {
         this.publicationYear = publicationYear;
         this.price = price;
         this.category = category;
+        this.stockQuantity = stockQuantity;
     }
 
     // Getters
@@ -78,5 +81,14 @@ public class Book {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+    public boolean isAvailable() {
+        return stockQuantity > 0;
     }
 }
