@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Reports - Admin</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .report-section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: var(--light); color: var(--dark); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="admin_dashboard.php" class="logo">Admin Panel</a>
+        <div class="nav-links">
+            <a href="admin_dashboard.php">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>System Reports</h1>
+
+        <div class="report-section">
+            <h3>Monthly Sales Report</h3>
+            <p style="color: #666; margin-bottom: 1rem;">Total sales for the previous month.</p>
+            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">$12,450.00</div>
+        </div>
+
+        <div class="report-section">
+            <h3>Sales by Date</h3>
+            <form action="reports.php" method="GET" style="display: flex; gap: 1rem; align-items: flex-end;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label>Select Date</label>
+                    <input type="date" name="report_date">
+                </div>
+                <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Get Report</button>
+            </form>
+        </div>
+
+        <div class="report-section">
+            <h3>Top 5 Customers (Last 3 Months)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Customer Name</th>
+                        <th>Total Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>Ahmed Ali</td> <td>$500.00</td> </tr>
+                    <tr> <td>2</td> <td>Sarah Smith</td> <td>$450.00</td> </tr>
+                    <tr> <td>3</td> <td>Mohamed Tarek</td> <td>$300.00</td> </tr>
+                    <tr> <td>4</td> <td>John Doe</td> <td>$210.00</td> </tr>
+                    <tr> <td>5</td> <td>Lisa Ray</td> <td>$150.00</td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="report-section">
+            <h3>Top Selling Books</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Book Title</th>
+                        <th>Copies Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>Database Systems</td> <td>120</td> </tr>
+                    <tr> <td>2</td> <td>Algorithms in C++</td> <td>95</td> </tr>
+                    <tr> <td>3</td> <td>Modern Art</td> <td>80</td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>
