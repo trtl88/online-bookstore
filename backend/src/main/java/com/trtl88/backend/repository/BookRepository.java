@@ -18,7 +18,31 @@ public class BookRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // 1. ADD NEW BOOK (Requirement: Admin Only [cite: 22, 23])
+    // 1. SELECT ALL BOOKS (For the "Browse" page)
+    public List<Book> findAll() {
+        String sql = "SELECT b.*, p.name as publisher_name, GROUP_CONCAT(a.name) as authors " +
+                     "FROM book b " +
+                     "JOIN publisher p ON b.publisher_id = p.id " +
+                     "LEFT JOIN book_authors ba ON b.isbn = ba.isbn " +
+                     "LEFT JOIN author a ON ba.author_id = a.id " +
+                     "GROUP BY b.isbn";
+        return jdbcTemplate.query(sql, new BookRowMapper());
+    }
+
+    // 2. SEARCH BOOKS (Requirement: Search by ISBN, Title, Category, Author, or Publisher)
+    public List<Book> searchBooks(String keyword) {
+        String sql = "SELECT b.*, p.name as publisher_name, GROUP_CONCAT(a.name) as authors " +
+                     "FROM book b " +
+                     "JOIN publisher p ON b.publisher_id = p.id " +
+                     "LEFT JOIN book_authors ba ON b.isbn = ba.isbn " +
+                     "LEFT JOIN author a ON ba.author_id = a.id " +
+                     "WHERE b.title LIKE ? OR b.isbn = ? OR b.category = ? OR a.name LIKE ? OR p.name LIKE ? " +
+                     "GROUP BY b.isbn";
+        String match = "%" + keyword + "%";
+        return jdbcTemplate.query(sql, new BookRowMapper(), match, keyword, keyword, match, match);
+    }
+
+    // 3. ADD NEW BOOK (Requirement: Admin Only)
     public int save(Book book) {
         String sql = "INSERT INTO book (isbn, title, publication_year, price, category, stock_quantity, threshold, publisher_id) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -28,27 +52,7 @@ public class BookRepository {
             book.getThreshold(), book.getPublisherId());
     }
 
-    // 2. MASTER SEARCH (Requirement: Search by ISBN, Title, Category, Author, or Publisher )
-    // This query joins books with authors and publishers to return "Availability".
-    public List<Book> searchBooks(String keyword) {
-        String sql = "SELECT b.*, p.name as publisher_name, GROUP_CONCAT(a.name) as authors " +
-                     "FROM book b " +
-                     "JOIN publisher p ON b.publisher_id = p.id " +
-                     "LEFT JOIN book_authors ba ON b.isbn = ba.isbn " +
-                     "LEFT JOIN author a ON ba.author_id = a.id " +
-                     "WHERE b.title LIKE ? " +
-                     "OR b.isbn = ? " +
-                     "OR b.category = ? " +
-                     "OR a.name LIKE ? " +
-                     "OR p.name LIKE ? " +
-                     "GROUP BY b.isbn";
-
-        String match = "%" + keyword + "%";
-        return jdbcTemplate.query(sql, new BookRowMapper(), match, keyword, keyword, match, match);
-    }
-
-    // 3. UPDATE BOOK (Requirement: Modify existing books & stock [cite: 30, 34])
-    // NOTE: If stock_quantity becomes negative, the MySQL trigger will throw an error.
+    // 4. MODIFY EXISTING BOOKS (Requirement: Admin can update any property)
     public int update(Book book) {
         String sql = "UPDATE book SET title = ?, publication_year = ?, price = ?, " +
                      "category = ?, stock_quantity = ?, threshold = ?, publisher_id = ? " +
@@ -59,13 +63,13 @@ public class BookRepository {
             book.getPublisherId(), book.getIsbn());
     }
 
-    // 4. LINK AUTHOR TO BOOK (Requirement: A book may have one or more authors )
+    // 5. LINK AUTHOR TO BOOK (Requirement: Multiple authors per book)
     public void addAuthorToBook(String isbn, int authorId) {
         String sql = "INSERT INTO book_authors (isbn, author_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, isbn, authorId);
     }
 
-    // Internal Mapper to handle the Results
+    // Internal RowMapper to bridge SQL and Java
     private static class BookRowMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -79,12 +83,12 @@ public class BookRepository {
             book.setThreshold(rs.getInt("threshold"));
             book.setPublisherId(rs.getLong("publisher_id"));
             
-            // These fields come from the JOINs in the search query
+            // These methods were added to your Book.java model
             try {
                 book.setPublisherName(rs.getString("publisher_name"));
-                book.setAuthorNames(rs.getString("authors")); // Comma-separated list
+                book.setAuthorNames(rs.getString("authors"));
             } catch (SQLException e) {
-                // Ignore if the specific query didn't use JOINs
+                // Keep going if the query didn't include JOINs
             }
             return book;
         }
