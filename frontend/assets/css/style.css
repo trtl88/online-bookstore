@@ -2,41 +2,132 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 :root {
-    --primary: #4f46e5;
-    --dark: #1e293b;
-    --light: #f3f4f6;
-    --white: #ffffff;
+    /* THEME COLORS */
+    --primary: #db2777;       /* Hot Pink (Buttons, Links) */
+    --secondary: #1e40af;     /* Deep Blue (Headings, Logo) */
+    --dark: #1e3a8a;          /* Dark Blue (Main Text) */
+    --light: #fff0f5;         /* Lavender Blush (Page Background) */
+    --white: #ffffff;         /* White (Card backgrounds) */
+    --border-pink: #fce7f3;   /* Light pink borders */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
+
+body { 
+    background-color: var(--light); 
+    color: var(--dark); 
+    line-height: 1.6; 
+}
 
 /* Navbar */
-.navbar { background: var(--white); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; }
-.nav-links a { text-decoration: none; color: var(--dark); margin-left: 1.5rem; font-weight: 500; }
-.nav-links a.btn { background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 4px; }
+.navbar { 
+    background: var(--white); 
+    padding: 1rem 2rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid var(--border-pink); /* Pink line under nav */
+    box-shadow: 0 2px 4px rgba(236, 72, 153, 0.1); /* Soft pink shadow */
+}
+
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: var(--secondary); /* Blue Logo */
+    text-decoration: none; 
+}
+
+.logo img { height: 100px; width: auto; }
+
+.nav-links a { 
+    text-decoration: none; 
+    color: var(--secondary); /* Blue links */
+    margin-left: 1.5rem; 
+    font-weight: 500; 
+    transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--primary); } /* Turns pink on hover */
+
+.nav-links a.btn { 
+    background: var(--primary); 
+    color: white; 
+    padding: 0.5rem 1rem; 
+    border-radius: 4px; 
+}
+
+.nav-links a.btn:hover { background: #be185d; } /* Darker pink hover */
 
 /* Container & Grid */
 .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
-.book-card { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.2s; }
+
+.book-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 2rem; 
+}
+
+.book-card { 
+    background: var(--white); 
+    padding: 1rem; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-pink); /* Subtle pink border */
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.15); /* Pink glow shadow */
+    transition: transform 0.2s; 
+}
+
 .book-card:hover { transform: translateY(-5px); }
-/* Update this in style.css */
+
+.book-card h3 { color: var(--secondary); } /* Blue Book Titles */
+
 .book-card img {
     width: 100%;
-    height: 350px;       /* Increased from 200px to fit tall covers */
-    object-fit: contain; /* key change: stops cutting off edges */
-    background: #f8fafc; /* Adds a clean background if the image is narrow */
+    height: 350px;
+    object-fit: contain;
+    background: #f0f9ff; /* Light blue tint behind images */
     margin-bottom: 1rem;
     border-radius: 4px;
 }
 
 /* Forms */
-.form-container { max-width: 500px; margin: 2rem auto; background: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.form-container { 
+    max-width: 500px; 
+    margin: 2rem auto; 
+    background: var(--white); 
+    padding: 2rem; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-pink);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.15); 
+}
+
 .form-group { margin-bottom: 1rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-.form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 4px; }
-.btn-submit { width: 100%; background: var(--primary); color: white; padding: 0.75rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; margin-top: 0.5rem; }
-.btn-submit:hover { opacity: 0.9; }
-.logo img { height: 100px; width: auto; }
+
+.form-group label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    font-weight: 500; 
+    color: var(--secondary); /* Blue labels */
+}
+
+.form-group input, .form-group select { 
+    width: 100%; 
+    padding: 0.75rem; 
+    border: 1px solid #bfdbfe; /* Light Blue border input */
+    border-radius: 4px; 
+    background-color: #f8fafc;
+}
+
+.btn-submit { 
+    width: 100%; 
+    background: var(--primary); /* Pink Submit Button */
+    color: white; 
+    padding: 0.75rem; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 1rem; 
+    font-weight: bold;
+    margin-top: 0.5rem; 
+}
+
+.btn-submit:hover { background: #be185d; } /* Darker pink on hover */
