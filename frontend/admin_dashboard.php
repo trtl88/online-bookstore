@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .admin-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .admin-card h3 { margin-bottom: 1rem; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.php" class="logo">Admin Panel</a>
+        <div class="nav-links">
+            <a href="../backend/logout.php" class="btn" style="background: #ef4444;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Welcome, Administrator</h1>
+        
+        <div class="admin-grid">
+            
+            <div class="admin-card">
+                <h3>Manage Books</h3>
+                <p>Add new books or edit existing stock levels.</p>
+                <br>
+                <a href="add_book.php" class="btn-submit" style="display:inline-block; text-decoration:none;">Add New Book</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>Publisher Orders</h3>
+                <p>Confirm incoming orders from publishers.</p>
+                <br>
+                <a href="confirm_orders.php" class="btn-submit" style="display:inline-block; text-decoration:none;">View Pending Orders</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>System Reports</h3>
+                <p>View sales history and top customers.</p>
+                <br>
+                <a href="reports.php" class="btn-submit" style="display:inline-block; text-decoration:none;">View Reports</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>User Management</h3>
+                <p>Promote users or manage accounts.</p>
+                <br>
+                <button class="btn-submit" style="background: #64748b;">Manage Users</button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
