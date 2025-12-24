@@ -4,6 +4,7 @@ import com.trtl88.backend.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.lang.NonNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -112,28 +113,29 @@ public class BookRepository {
 
     // Internal RowMapper to bridge SQL and Java
     private static class BookRowMapper implements RowMapper<Book> {
-    @Override
-    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Book book = new Book();
-        
-        // Map the columns that ACTUALLY exist in your 'book' table
-        book.setIsbn(rs.getString("isbn"));
-        book.setTitle(rs.getString("title"));
-        book.setPublicationYear(rs.getInt("publication_year"));
-        book.setPrice(rs.getDouble("price"));
-        book.setCategory(rs.getString("category"));
-        book.setStockQuantity(rs.getInt("stock_quantity"));
-        book.setThreshold(rs.getInt("threshold"));
-        
-        // Make sure this matches the type in your Book.java (Long vs Int)
-        book.setPublisherId(rs.getInt("publisher_id")); 
+        @Override
+        public Book mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
+            Book book = new Book();
 
-        // DELETED: book.setAuthorNames(...) 
-        // Why? Because we fill this in the Service layer using bookRepository.findAuthorsByIsbn()
-        // DELETED: book.setPublisherName(...)
-        // Why? Because this column doesn't exist in the 'book' table.
+            // Map the columns that ACTUALLY exist in your 'book' table
+            book.setIsbn(rs.getString("isbn"));
+            book.setTitle(rs.getString("title"));
+            book.setPublicationYear(rs.getInt("publication_year"));
+            book.setPrice(rs.getDouble("price"));
+            book.setCategory(rs.getString("category"));
+            book.setStockQuantity(rs.getInt("stock_quantity"));
+            book.setThreshold(rs.getInt("threshold"));
 
-        return book;
+            // Make sure this matches the type in your Book.java (Long vs Int)
+            book.setPublisherId(rs.getInt("publisher_id"));
+            book.setPublisherName(rs.getString("publisher_name"));
+            // DELETED: book.setAuthorNames(...)
+            // Why? Because we fill this in the Service layer using
+            // bookRepository.findAuthorsByIsbn()
+            // DELETED: book.setPublisherName(...)
+            // Why? Because this column doesn't exist in the 'book' table.
+
+            return book;
+        }
     }
-}
 }

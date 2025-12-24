@@ -1,4 +1,5 @@
 package com.trtl88.backend.models;
+
 import java.util.List;
 import java.time.LocalDate;
 
@@ -9,12 +10,13 @@ public class Order {
     private LocalDate orderDate;
 
     public Order(int orderId, Publisher publisher,
-                 List<Book> books, LocalDate orderDate) {
+            List<Book> books, LocalDate orderDate) {
         this.orderId = orderId;
         this.publisher = publisher;
         this.books = books;
         this.orderDate = orderDate;
     }
+
     public Order() {
     }
 

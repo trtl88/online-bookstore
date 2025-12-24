@@ -1,4 +1,5 @@
 package com.trtl88.backend.models;
+
 public class Publisher {
     private int publisherId;
     private String name;
@@ -11,6 +12,7 @@ public class Publisher {
         this.phoneNumber = phoneNumber;
         this.publisherId = publisherId;
     }
+
     public Publisher() {
     }
 
@@ -25,7 +27,7 @@ public class Publisher {
     public String getPhoneNumber() {
         return phoneNumber;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,9 +39,11 @@ public class Publisher {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public int getPublisherId() {
         return publisherId;
     }
+
     public void setPublisherId(int publisherId) {
         this.publisherId = publisherId;
     }

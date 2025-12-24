@@ -2,7 +2,6 @@ package com.trtl88.backend.models;
 
 public class User {
 
-    
     private String username;
     private String password;
     private String firstName;
@@ -10,13 +9,12 @@ public class User {
     private String email;
     private String phoneNumber;
     private String shippingAddress;
-    private boolean isAdmin; 
+    private boolean isAdmin;
 
     // Getters and Setters for all fields...
 
-
-    
-    public User(String firstName, String lastName, String username, String password, String email, String phoneNumber, String shippingAddress, boolean isAdmin) {
+    public User(String firstName, String lastName, String username, String password, String email, String phoneNumber,
+            String shippingAddress, boolean isAdmin) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -26,6 +24,7 @@ public class User {
         this.shippingAddress = shippingAddress;
         this.isAdmin = isAdmin;
     }
+
     public User() {
     }
 
@@ -70,7 +69,6 @@ public class User {
         this.email = email;
     }
 
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -86,6 +84,7 @@ public class User {
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
+
     public boolean isAdmin() {
         return isAdmin;
     }
