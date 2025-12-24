@@ -1,3 +1,4 @@
+package com.trtl88.backend;
 public class Publisher {
     private String name;
     private String address;
