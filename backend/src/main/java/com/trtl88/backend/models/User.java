@@ -29,6 +29,8 @@ public abstract class User {
         this.shippingAddress = shippingAddress;
         this.isAdmin = isAdmin;
     }
+    public User() {
+    }
 
     // Getters and Setters
     public String getFirstName() {

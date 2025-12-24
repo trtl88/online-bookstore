@@ -15,6 +15,8 @@ public class Order {
         this.books = books;
         this.orderDate = orderDate;
     }
+    public Order() {
+    }
 
     // Getters
     public int getOrderId() {

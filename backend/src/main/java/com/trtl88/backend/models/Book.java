@@ -1,4 +1,5 @@
 package com.trtl88.backend.models;
+import java.util.Arrays;
 import java.util.List;
 
 public class Book {
@@ -8,14 +9,14 @@ public class Book {
     private Publisher publisher;
     private int publicationYear;
     private double price;
-    private Category category;
+    private String category;
     private int stockQuantity;
     private int threshold;
 
 
     public Book(String isbn, String title, List<Author> authors,
                 Publisher publisher, int publicationYear,
-                double price, Category category, int stockQuantity, int threshold) {
+                double price, String category, int stockQuantity, int threshold) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
@@ -25,6 +26,9 @@ public class Book {
         this.category = category;
         this.stockQuantity = stockQuantity;
         this.threshold = threshold;
+    }
+
+    public Book() {
     }
 
     // Getters
@@ -52,7 +56,7 @@ public class Book {
         return price;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -81,8 +85,18 @@ public class Book {
         this.price = price;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+     
+        List<String> allowedCategories = Arrays.asList(
+            "Science", "Art", "Religion", "History", "Geography"
+        );
+
+        if (allowedCategories.contains(category)) {
+            this.category = category;
+        } else {
+            // This prevents "bad data" from ever reaching your Friend's database
+            throw new IllegalArgumentException("Invalid category. Must be one of: " + allowedCategories);
+        }
     }
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
@@ -99,4 +113,37 @@ public class Book {
     public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
+
+    public void setPublisherName(String publisherName) {
+        if (this.publisher == null) {
+            this.publisher = new Publisher();
+        }
+        this.publisher.setName(publisherName);
+    }
+
+    public void setAuthorNames(String authorNamesCsv) {
+    if (authorNamesCsv == null || authorNamesCsv.isEmpty()) return;
+    
+    String[] names = authorNamesCsv.split(",");
+    this.authors = Arrays.stream(names)
+                         .map(String::trim)
+                         .filter(name -> !name.isEmpty()) // Skip empty strings
+                         .map(Author::new) // Ensure Author has a constructor: public Author(String name)
+                         .toList();
+}
+
+    public long getPublisherId() {
+    // This prevents the app from crashing if no publisher is assigned yet
+    return (this.publisher != null) ? this.publisher.getPublisherId() : 0;
+}
+
+    public void setPublisherId(long publisherId) {
+        if (this.publisher == null) {
+            this.publisher = new Publisher();
+        }
+        this.publisher.setPublisherId(publisherId);
+    }
+
+
+
 }
