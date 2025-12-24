@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Book</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="admin_dashboard.php" class="logo">Admin Panel</a>
+        <div class="nav-links">
+            <a href="admin_dashboard.php">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container" style="max-width: 800px;">
+            <h2>Add New Book</h2>
+            <form action="../backend/add_book_logic.php" method="POST">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" name="isbn" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Author(s)</label>
+                        <input type="text" name="authors" placeholder="e.g. John Doe, Jane Smith" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Publisher</label>
+                        <input type="text" name="publisher" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Publication Year</label>
+                        <input type="number" name="year" min="1900" max="2099" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Selling Price ($)</label>
+                        <input type="number" step="0.01" name="price" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="Science">Science</option>
+                            <option value="Art">Art</option>
+                            <option value="Religion">Religion</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" name="stock" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Minimum Threshold</label>
+                        <input type="number" name="threshold" placeholder="e.g. 5" required>
+                    </div>
+                    
+                </div>
+
+                <button type="submit" class="btn-submit">Add Book to Database</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
