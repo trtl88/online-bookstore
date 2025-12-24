@@ -55,6 +55,41 @@
                 </tbody>
             </table>
         </div>
+        <div class="report-section">
+            <h3>Book Demand Report</h3>
+            <p>Check how many times a specific book has been ordered (for replenishment orders).</p>
+            
+            <form action="#" method="GET" style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1rem;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label>Enter Book ISBN</label>
+                    <input type="text" name="isbn" placeholder="e.g. 978-3-16-148410-0">
+                </div>
+                <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Check Count</button>
+            </form>
+
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 4px;">
+                <strong>Result:</strong> Book <em>"Database Systems"</em> has been ordered <strong>142 times</strong>.
+            </div>
+        </div>
+        <div class="report-section">
+    <h3>3. Manage Book Stock (Trigger Test)</h3>
+    <p>Update a book's quantity. If it drops below the threshold, an order is auto-generated.</p>
+
+    <form action="update_stock.php" method="POST" style="display: flex; gap: 1rem; align-items: flex-end;">
+        
+        <div class="form-group" style="margin-bottom: 0; flex: 1;">
+            <label>Select Book ISBN</label>
+            <input type="text" name="isbn" placeholder="e.g. 978-3-16-148410-0" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0; width: 150px;">
+            <label>New Quantity</label>
+            <input type="number" name="new_quantity" placeholder="e.g. 5" required>
+        </div>
+
+        <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Update Stock</button>
+    </form>
+</div>
     </div>
 </body>
 </html>

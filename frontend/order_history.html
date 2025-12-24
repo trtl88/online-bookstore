@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Past Orders</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .order-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; }
+        .order-table th, .order-table td { padding: 1rem; border-bottom: 1px solid #ddd; text-align: left; }
+        .order-table th { background: var(--primary); color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><img src="assets/img/logo.png" style="height:80px;"></a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="edit_profile.html">Edit Profile</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>My Order History</h2>
+        
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Order No</th>
+                    <th>Date</th>
+                    <th>Book Title (ISBN)</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#1001</td>
+                    <td>2025-10-24</td>
+                    <td>Database Systems (978-3-16-148410-0)</td>
+                    <td>1</td>
+                    <td>$50.00</td>
+                    <td><span style="color: green; font-weight: bold;">Delivered</span></td>
+                </tr>
+                <tr>
+                    <td>#1002</td>
+                    <td>2025-11-05</td>
+                    <td>Modern Art History (978-1-491-91866-1)</td>
+                    <td>2</td>
+                    <td>$71.98</td>
+                    <td><span style="color: orange; font-weight: bold;">Processing</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
