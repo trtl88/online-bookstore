@@ -1,4 +1,4 @@
-package com.trtl88.backend;
+package com.trtl88.backend.models;
 import java.util.List;
 import java.time.LocalDate;
 

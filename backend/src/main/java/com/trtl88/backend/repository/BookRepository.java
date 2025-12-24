@@ -1,10 +1,11 @@
 package com.trtl88.backend.repository;
 
-import com.trtl88.backend.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import com.trtl88.backend.models.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

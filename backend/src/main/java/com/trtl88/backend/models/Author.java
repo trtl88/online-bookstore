@@ -1,4 +1,4 @@
-package com.trtl88.backend;
+package com.trtl88.backend.models;
 public class Author {
     private String name;
 
