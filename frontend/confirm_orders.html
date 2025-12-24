@@ -11,18 +11,16 @@
     </style>
 </head>
 <body>
-
     <nav class="navbar">
-        <a href="admin_dashboard.php" class="logo">Admin Panel</a>
+        <a href="admin_dashboard.html" class="logo">Admin Panel</a>
         <div class="nav-links">
-            <a href="admin_dashboard.php">Back to Dashboard</a>
+            <a href="admin_dashboard.html">Back to Dashboard</a>
         </div>
     </nav>
 
     <div class="container">
         <h1>Pending Publisher Orders</h1>
-        <p style="margin-bottom: 2rem;">Confirm receipt of stock from publishers.</p>
-
+        
         <div class="order-card">
             <div class="order-info">
                 <h4>Order #9921 - Pearson Education</h4>
@@ -30,26 +28,11 @@
                 <p>Quantity Ordered: 50 Copies</p>
                 <span class="badge">Pending Arrival</span>
             </div>
-            <form action="../backend/confirm_order_logic.php" method="POST">
+            <form action="#" method="POST">
                 <input type="hidden" name="order_id" value="9921">
                 <button type="submit" class="btn-submit" style="background: #10b981; margin:0;">Confirm Receipt</button>
             </form>
         </div>
-
-        <div class="order-card">
-            <div class="order-info">
-                <h4>Order #9922 - O'Reilly Media</h4>
-                <p>Book: <strong>Learning PHP & MySQL</strong> (ISBN: 978-1-491-91866-1)</p>
-                <p>Quantity Ordered: 20 Copies</p>
-                <span class="badge">Pending Arrival</span>
-            </div>
-            <form action="../backend/confirm_order_logic.php" method="POST">
-                <input type="hidden" name="order_id" value="9922">
-                <button type="submit" class="btn-submit" style="background: #10b981; margin:0;">Confirm Receipt</button>
-            </form>
-        </div>
-
     </div>
-
 </body>
 </html>

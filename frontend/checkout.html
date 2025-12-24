@@ -2,49 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Alexandria Bookstore</title>
+    <title>Checkout</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
     <nav class="navbar">
-        <a href="index.php" class="logo">Alexandria Books</a>
+        <a href="index.html" class="logo">Alexandria Books</a>
         <div class="nav-links">
-            <a href="cart.php">Back to Cart</a>
+            <a href="cart.html">Back to Cart</a>
         </div>
     </nav>
 
     <div class="container">
         <div class="form-container" style="max-width: 600px;">
             <h2 style="border-bottom: 2px solid #eee; padding-bottom: 1rem; margin-bottom: 1.5rem;">Secure Checkout</h2>
-            
             <div style="background: #f8fafc; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
                 <h4>Order Summary</h4>
-                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
-                    <span>Total Items:</span>
-                    <span>3</span>
-                </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: bold; font-size: 1.2rem;">
                     <span>Total to Pay:</span>
-                    <span style="color: var(--primary);">$121.98</span>
+                    <span style="color: var(--primary);">$50.00</span>
                 </div>
             </div>
 
-            <form action="../backend/checkout_logic.php" method="POST">
-                
+            <form action="#" method="POST">
                 <h4 style="margin-bottom: 1rem;">Payment Details</h4>
-
                 <div class="form-group">
                     <label>Cardholder Name</label>
                     <input type="text" name="card_name" placeholder="Name on Card" required>
                 </div>
-
                 <div class="form-group">
                     <label>Credit Card Number</label>
                     <input type="text" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19" required>
                 </div>
-
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label>Expiry Date</label>
@@ -55,11 +44,9 @@
                         <input type="text" name="cvv" placeholder="123" maxlength="3" required>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-submit" style="margin-top: 1rem;">Pay & Place Order</button>
             </form>
         </div>
     </div>
-
 </body>
 </html>
