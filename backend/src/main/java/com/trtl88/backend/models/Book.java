@@ -1,11 +1,12 @@
 package com.trtl88.backend.models;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class Book {
     private String isbn;
     private String title;
-    private List<Author> authors;
+    private List<String> authors;
     private Publisher publisher;
     private int publicationYear;
     private double price;
@@ -13,10 +14,9 @@ public class Book {
     private int stockQuantity;
     private int threshold;
 
-
-    public Book(String isbn, String title, List<Author> authors,
-                Publisher publisher, int publicationYear,
-                double price, String category, int stockQuantity, int threshold) {
+    public Book(String isbn, String title, List<String> authors,
+            Publisher publisher, int publicationYear,
+            double price, String category, int stockQuantity, int threshold) {
         this.isbn = isbn;
         this.title = title;
         this.authors = authors;
@@ -40,7 +40,7 @@ public class Book {
         return title;
     }
 
-    public List<Author> getAuthors() {
+    public List<String> getAuthors() {
         return authors;
     }
 
@@ -69,7 +69,7 @@ public class Book {
         this.title = title;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<String> authors) {
         this.authors = authors;
     }
 
@@ -86,10 +86,9 @@ public class Book {
     }
 
     public void setCategory(String category) {
-     
+
         List<String> allowedCategories = Arrays.asList(
-            "Science", "Art", "Religion", "History", "Geography"
-        );
+                "Science", "Art", "Religion", "History", "Geography");
 
         if (allowedCategories.contains(category)) {
             this.category = category;
@@ -98,18 +97,23 @@ public class Book {
             throw new IllegalArgumentException("Invalid category. Must be one of: " + allowedCategories);
         }
     }
+
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
+
     public int getStockQuantity() {
         return stockQuantity;
     }
+
     public boolean isAvailable() {
         return stockQuantity > 0;
     }
+
     public int getThreshold() {
         return threshold;
     }
+
     public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
@@ -121,29 +125,22 @@ public class Book {
         this.publisher.setName(publisherName);
     }
 
-    public void setAuthorNames(String authorNamesCsv) {
-    if (authorNamesCsv == null || authorNamesCsv.isEmpty()) return;
-    
-    String[] names = authorNamesCsv.split(",");
-    this.authors = Arrays.stream(names)
-                         .map(String::trim)
-                         .filter(name -> !name.isEmpty()) // Skip empty strings
-                         .map(Author::new) // Ensure Author has a constructor: public Author(String name)
-                         .toList();
-}
+    public void setAuthorNames(List<String> authors) {
+        if (authors == null || authors.isEmpty())
+            return;
+        this.authors = authors;
+    }
 
-    public long getPublisherId() {
-    // This prevents the app from crashing if no publisher is assigned yet
-    return (this.publisher != null) ? this.publisher.getPublisherId() : 0;
-}
+    public int getPublisherId() {
+        // This prevents the app from crashing if no publisher is assigned yet
+        return (this.publisher != null) ? this.publisher.getPublisherId() : 0;
+    }
 
-    public void setPublisherId(long publisherId) {
+    public void setPublisherId(int publisherId) {
         if (this.publisher == null) {
             this.publisher = new Publisher();
         }
         this.publisher.setPublisherId(publisherId);
     }
-
-
 
 }

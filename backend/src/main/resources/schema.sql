@@ -37,6 +37,21 @@ CREATE TABLE users (
     role ENUM('ADMIN', 'CUSTOMER') NOT NULL
 );
 
+-- 1. Table to store unique authors
+CREATE TABLE author (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- 2. "Middle Table" to link Books <--> Authors
+CREATE TABLE book_authors (
+    book_isbn VARCHAR(20),
+    author_id INT,
+    PRIMARY KEY (book_isbn, author_id),
+    FOREIGN KEY (book_isbn) REFERENCES book(isbn),
+    FOREIGN KEY (author_id) REFERENCES author(author_id)
+);
+
 -- 5. REQUIRED TRIGGER: Prevent Negative Stock
 DELIMITER //
 CREATE TRIGGER before_book_update
