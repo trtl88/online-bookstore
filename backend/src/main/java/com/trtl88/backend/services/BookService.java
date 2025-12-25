@@ -1,7 +1,8 @@
 package com.trtl88.backend.services;
 
 import com.trtl88.backend.models.Book;
-import com.trtl88.backend.repository.BookRepository;
+import com.trtl88.backend.repositories.BookRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class BookService {
      * ADMIN ONLY: Add a new book to the store.
      * Includes validation logic.
      */
+    @Transactional // <--- Add this annotation
     public String addNewBook(Book book) {
         // 1. Validate Price
         if (book.getPrice() < 0) {
@@ -81,6 +83,7 @@ public class BookService {
      * Note: If stock drops below threshold, the MySQL Trigger will handle the
      * auto-order.
      */
+    @Transactional // <--- Add this here too just in case
     public String updateBook(Book book) {
         // Logic to prevent updating a non-existent book
         if (bookRepository.searchBooks(book.getIsbn()).isEmpty()) {

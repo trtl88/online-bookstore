@@ -1,56 +1,45 @@
 package com.trtl88.backend.models;
 
-import java.util.List;
-import java.time.LocalDate;
+import java.sql.Date; // Using java.sql.Date matches JDBC easier than LocalDate
 
 public class Order {
-    private int orderId;
-    private Publisher publisher;
-    private List<Book> books;
-    private LocalDate orderDate;
+    private Long orderId; // Changed to Long (Database IDs are usually Long)
+    private String username; // CHANGED: Links to the User who bought the books
+    private Date orderDate; // Matches the database 'DATE' column
 
-    public Order(int orderId, Publisher publisher,
-            List<Book> books, LocalDate orderDate) {
-        this.orderId = orderId;
-        this.publisher = publisher;
-        this.books = books;
-        this.orderDate = orderDate;
-    }
-
+    // Empty Constructor (Required for RowMapper)
     public Order() {
     }
 
-    // Getters
-    public int getOrderId() {
+    // Full Constructor
+    public Order(Long orderId, String username, Date orderDate) {
+        this.orderId = orderId;
+        this.username = username;
+        this.orderDate = orderDate;
+    }
+
+    // Getters and Setters
+    public Long getOrderId() {
         return orderId;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    // Setters
-    public void setOrderId(int orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
+    public String getUsername() {
+        return username;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 }

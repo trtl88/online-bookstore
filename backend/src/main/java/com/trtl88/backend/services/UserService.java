@@ -1,7 +1,8 @@
 package com.trtl88.backend.services;
 
 import com.trtl88.backend.models.User;
-import com.trtl88.backend.repository.UserRepository;
+import com.trtl88.backend.repositories.UserRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

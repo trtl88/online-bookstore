@@ -1,4 +1,4 @@
-package com.trtl88.backend.repository;
+package com.trtl88.backend.repositories;
 
 import com.trtl88.backend.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
