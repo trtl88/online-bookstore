@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Reports</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .report-section { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: var(--light); color: var(--dark); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="admin_dashboard.html" class="logo">Admin Panel</a>
+        <div class="nav-links">
+            <a href="admin_dashboard.html">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>System Reports</h1>
+
+        <div class="report-section">
+            <h3>Monthly Sales Report</h3>
+            <p style="color: #666; margin-bottom: 1rem;">Total sales for the previous month.</p>
+            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">$12,450.00</div>
+        </div>
+
+        <div class="report-section">
+            <h3>Sales by Date</h3>
+            <form action="#" method="GET" style="display: flex; gap: 1rem; align-items: flex-end;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label>Select Date</label>
+                    <input type="date" name="report_date">
+                </div>
+                <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Get Report</button>
+            </form>
+        </div>
+
+        <div class="report-section">
+            <h3>Top 5 Customers (Last 3 Months)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Customer Name</th>
+                        <th>Total Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>Ahmed Ali</td> <td>$500.00</td> </tr>
+                    <tr> <td>2</td> <td>Sarah Smith</td> <td>$450.00</td> </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="report-section">
+            <h3>Top 10 Selling Books (Last 3 Months)</h3>
+            <p style="color: #666; margin-bottom: 1rem;">Books ranked by total number of copies sold.</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Book Title</th>
+                        <th>ISBN</th>
+                        <th>Copies Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>Introduction to Algorithms</td> <td>978-0262033848</td> <td>150</td> </tr>
+                    <tr> <td>2</td> <td>Clean Code</td> <td>978-0132350884</td> <td>120</td> </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div class="report-section">
+            <h3>Book Demand Report</h3>
+            <p>Check how many times a specific book has been ordered (for replenishment orders).</p>
+            
+            <form action="#" method="GET" style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1rem;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label>Enter Book ISBN</label>
+                    <input type="text" name="isbn" placeholder="e.g. 978-3-16-148410-0">
+                </div>
+                <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Check Count</button>
+            </form>
+
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 4px;">
+                <strong>Result:</strong> Book <em>"Database Systems"</em> has been ordered <strong>142 times</strong>.
+            </div>
+        </div>
+        <div class="report-section">
+    <h3>3. Manage Book Stock (Trigger Test)</h3>
+    <p>Update a book's quantity. If it drops below the threshold, an order is auto-generated.</p>
+
+    <form action="update_stock.php" method="POST" style="display: flex; gap: 1rem; align-items: flex-end;">
+        
+        <div class="form-group" style="margin-bottom: 0; flex: 1;">
+            <label>Select Book ISBN</label>
+            <input type="text" name="isbn" placeholder="e.g. 978-3-16-148410-0" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0; width: 150px;">
+            <label>New Quantity</label>
+            <input type="number" name="new_quantity" placeholder="e.g. 5" required>
+        </div>
+
+        <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Update Stock</button>
+    </form>
+</div>
+    </div>
+</body>
+</html>
