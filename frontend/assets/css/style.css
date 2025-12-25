@@ -3,15 +3,16 @@
 
 :root {
     /* --- THEME COLORS --- */
-    --primary: #2563eb;       /* BRIGHT BLUE (Buttons, Active Links) */
-    --primary-dark: #1e40af;  /* Darker Blue (Button Hover) */
-    
-    --secondary: #db2777;     /* Pink (Accents, Logo, Highlights) */
-    --dark: #0f172a;          /* Very Dark Blue/Black (Main Text) */
-    
-    --light: #fff0f5;         /* Lavender Blush (Page Background) */
-    --white: #ffffff;         /* White (Card backgrounds) */
-    --border-pink: #fce7f3;   /* Light pink borders */
+    --primary: #2563eb;       /* BRIGHT BLUE */
+    --primary-dark: #1e40af;  
+    --secondary: #db2777;     /* PINK */
+    --dark: #0f172a;          
+    --light: #f1f5f9;         /* Light Gray/Blue background */
+    --white: #ffffff;         
+    --border: #e2e8f0;        /* Light Border */
+    --success: #10b981;       /* Green */
+    --warning: #f59e0b;       /* Orange */
+    --danger: #ef4444;        /* Red */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
@@ -22,25 +23,18 @@ body {
     line-height: 1.6; 
 }
 
-/* Navbar */
+/* --- NAVBAR --- */
 .navbar { 
     background: var(--white); 
     padding: 1rem 2rem; 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    border-bottom: 2px solid var(--border-pink);
-    box-shadow: 0 2px 4px rgba(236, 72, 153, 0.1); 
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
 }
 
-.logo { 
-    font-size: 1.5rem; 
-    font-weight: bold; 
-    color: var(--secondary); /* Pink Logo to contrast with Blue buttons */
-    text-decoration: none; 
-}
-
-.logo img { height: 100px; width: auto; }
+.logo img { height: 50px; width: auto; } /* Adjusted size */
 
 .nav-links a { 
     text-decoration: none; 
@@ -50,10 +44,10 @@ body {
     transition: color 0.2s;
 }
 
-.nav-links a:hover { color: var(--secondary); } 
+.nav-links a:hover { color: var(--primary); } 
 
 .nav-links a.btn { 
-    background: var(--primary); /* BLUE BUTTON */
+    background: var(--primary); 
     color: white; 
     padding: 0.5rem 1rem; 
     border-radius: 4px; 
@@ -61,9 +55,53 @@ body {
 
 .nav-links a.btn:hover { background: var(--primary-dark); } 
 
-/* Container & Grid */
+/* --- LAYOUT --- */
 .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
+/* --- BUTTONS --- */
+.btn-submit { 
+    width: 100%; 
+    background: var(--primary); 
+    color: white; 
+    padding: 0.75rem; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 1rem; 
+    font-weight: bold;
+    margin-top: 0.5rem; 
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+.btn-submit:hover { background: var(--primary-dark); }
+
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #b91c1c; }
+
+.btn-success { background: var(--success); }
+.btn-success:hover { background: #047857; }
+
+/* --- FORMS --- */
+.form-container { 
+    max-width: 500px; 
+    margin: 2rem auto; 
+    background: var(--white); 
+    padding: 2rem; 
+    border-radius: 12px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+}
+
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+.form-group input, .form-group select { 
+    width: 100%; padding: 0.75rem; 
+    border: 1px solid var(--border); 
+    border-radius: 4px; 
+}
+
+/* --- BOOK GRID --- */
 .book-grid { 
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
@@ -73,64 +111,35 @@ body {
 .book-card { 
     background: var(--white); 
     padding: 1rem; 
-    border-radius: 12px; 
-    border: 1px solid var(--border-pink); 
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.15); /* Pink Shadow */
+    border-radius: 8px; 
+    border: 1px solid var(--border); 
     transition: transform 0.2s; 
 }
+.book-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+.book-card img { width: 100%; height: 300px; object-fit: contain; margin-bottom: 1rem; }
+.book-card h3 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1.1rem; }
 
-.book-card:hover { transform: translateY(-5px); }
-
-.book-card h3 { color: var(--primary); } /* Blue Book Titles */
-
-.book-card img {
-    width: 100%;
-    height: 350px;
-    object-fit: contain;
-    background: #f0f9ff; 
-    margin-bottom: 1rem;
-    border-radius: 4px;
-}
-
-/* Forms */
-.form-container { 
-    max-width: 500px; 
-    margin: 2rem auto; 
+/* --- UNIFIED TABLES (Cart, Orders, Users, Reports) --- */
+.styled-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 1rem; 
     background: var(--white); 
-    padding: 2rem; 
-    border-radius: 12px; 
-    border: 1px solid var(--border-pink);
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.15); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+    border-radius: 8px; 
+    overflow: hidden; 
 }
 
-.form-group { margin-bottom: 1rem; }
-
-.form-group label { 
-    display: block; 
-    margin-bottom: 0.5rem; 
-    font-weight: 500; 
-    color: var(--dark);
+.styled-table th, .styled-table td { 
+    padding: 1rem; 
+    text-align: left; 
+    border-bottom: 1px solid var(--border); 
 }
 
-.form-group input, .form-group select { 
-    width: 100%; 
-    padding: 0.75rem; 
-    border: 1px solid #bfdbfe; 
-    border-radius: 4px; 
-    background-color: #f8fafc;
-}
-
-.btn-submit { 
-    width: 100%; 
-    background: var(--primary); /* BLUE BUTTON */
+.styled-table th { 
+    background-color: var(--primary); 
     color: white; 
-    padding: 0.75rem; 
-    border: none; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-size: 1rem; 
-    font-weight: bold;
-    margin-top: 0.5rem; 
+    font-weight: 600; 
 }
 
-.btn-submit:hover { background: var(--primary-dark); } /* Dark Blue on Hover */
+.styled-table tr:last-child td { border-bottom: none; }

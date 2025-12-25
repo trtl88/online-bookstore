@@ -4,25 +4,21 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .admin-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
-        .admin-card h3 { margin-bottom: 1rem; color: var(--primary); }
-    </style>
-</head>
+    <link rel="stylesheet" href="assets/css/admin.css"> </head>
 <body>
     <nav class="navbar">
         <a href="index.html" class="logo">
             <img src="assets/img/logo.png" alt="Alexandria Books">
         </a>
         <div class="nav-links">
-            <a href="login.html" class="btn" style="background: #ef4444;">Logout</a>
+            <a href="#" onclick="logout()" class="btn" style="background: #ef4444;">Logout</a>
         </div>
     </nav>
 
     <div class="container">
         <h1>Welcome, Administrator</h1>
         <div class="admin-grid">
+            
             <div class="admin-card">
                 <h3>Manage Books</h3>
                 <p>Add new books or edit existing stock levels.</p>
@@ -46,7 +42,17 @@
                 <br>
                 <a href="reports.html" class="btn-submit" style="display:inline-block; text-decoration:none;">View Reports</a>
             </div>
+
+             <div class="admin-card">
+                <h3>Manage Users</h3>
+                <p>View customers and promote them to managers.</p>
+                <br>
+                <a href="manage_users.html" class="btn-submit" style="display:inline-block; text-decoration:none;">View Customers</a>
+            </div>
         </div>
     </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
 </body>
 </html>

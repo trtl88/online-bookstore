@@ -17,33 +17,92 @@
         <h2>Modify Existing Books</h2>
         
         <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-            <h4>Search Book to Edit</h4>
-            <form style="display: flex; gap: 1rem;">
-                <input type="text" placeholder="Enter ISBN or Title..." style="flex: 1; padding: 0.5rem;">
-                <button class="btn-submit" style="width: auto; margin:0;">Search</button>
-            </form>
+            <h4>Search Book to Edit (Enter ISBN)</h4>
+            <div style="display: flex; gap: 1rem;">
+                <input type="text" id="search-isbn" placeholder="e.g. 978-0439708180" style="flex: 1; padding: 0.5rem;">
+                <button class="btn-submit" style="width: auto; margin:0;" onclick="loadBook()">Search</button>
+            </div>
         </div>
 
         <div class="form-container" style="margin: 0; max-width: 100%;">
-            <h3>Edit Details: "Database Systems"</h3>
-            <form action="#" method="POST">
+            <h3 id="edit-title">Edit Details</h3>
+            <form id="edit-form">
+                <input type="hidden" name="isbn" id="edit-isbn">
+                
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                     <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" id="input-title" required>
+                    </div>
                     <div class="form-group">
                         <label>Stock Quantity</label>
-                        <input type="number" name="stock" value="50">
+                        <input type="number" name="stockQuantity" id="input-stock" required>
                     </div>
                     <div class="form-group">
                         <label>Price ($)</label>
-                        <input type="number" step="0.01" name="price" value="50.00">
+                        <input type="number" step="0.01" name="price" id="input-price" required>
                     </div>
                     <div class="form-group">
                         <label>Threshold</label>
-                         <input type="number" name="threshold" value="5">
+                         <input type="number" name="threshold" id="input-threshold" required>
                     </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" id="input-category" required>
+                            <option value="Science">Science</option>
+                            <option value="Art">Art</option>
+                            <option value="Religion">Religion</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                        </select>
+                    </div>
+                     <input type="hidden" name="publicationYear" id="input-year">
+                    <input type="hidden" name="publisherId" id="input-pubId">
                 </div>
                 <button type="submit" class="btn-submit">Save Changes</button>
             </form>
         </div>
     </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // 1. Load Book Data
+        async function loadBook() {
+            const isbn = document.getElementById("search-isbn").value;
+            try {
+                const res = await fetch(`http://localhost:8080/api/books/${isbn}`);
+                if(!res.ok) throw new Error("Book not found");
+                const book = await res.json();
+
+                document.getElementById("edit-title").innerText = "Editing: " + book.title;
+                document.getElementById("edit-isbn").value = book.isbn;
+                document.getElementById("input-title").value = book.title;
+                document.getElementById("input-stock").value = book.stockQuantity;
+                document.getElementById("input-price").value = book.price;
+                document.getElementById("input-threshold").value = book.threshold;
+                document.getElementById("input-category").value = book.category;
+                document.getElementById("input-year").value = book.publicationYear;
+                document.getElementById("input-pubId").value = book.publisherId;
+
+            } catch(e) { alert("Book not found!"); }
+        }
+
+        // 2. Submit Updates
+        document.getElementById("edit-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const book = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch("http://localhost:8080/api/books/update", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(book)
+                });
+                const text = await res.text();
+                alert(text);
+            } catch(err) { console.error(err); }
+        });
+    </script>
 </body>
 </html>

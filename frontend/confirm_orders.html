@@ -1,38 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Confirm Publisher Orders</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css" />
     <style>
-        .order-card { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; border-left: 5px solid #f59e0b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .order-info h4 { margin-bottom: 0.5rem; }
-        .badge { background: #fef3c7; color: #d97706; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+      .order-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border-left: 5px solid #f59e0b;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .order-info h4 {
+        margin-bottom: 0.5rem;
+      }
+      .badge {
+        background: #fef3c7;
+        color: #d97706;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar">
-        <a href="admin_dashboard.html" class="logo">Admin Panel</a>
-        <div class="nav-links">
-            <a href="admin_dashboard.html">Back to Dashboard</a>
-        </div>
+      <a href="admin_dashboard.html" class="logo">Admin Panel</a>
+      <div class="nav-links">
+        <a href="admin_dashboard.html">Back to Dashboard</a>
+      </div>
     </nav>
+    <div id="orders-container"></div>
 
+    <script src="assets/js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("orders-container");
+        const res = await fetch(
+          "http://localhost:8080/api/manager/orders/pending"
+        );
+        const orders = await res.json();
+
+        if (orders.length === 0)
+          container.innerHTML = "<p>No pending orders.</p>";
+
+        orders.forEach((order) => {
+          const card = `
+                <div class="order-card" style="margin-bottom: 1rem; padding: 1rem; background: white; border-left: 4px solid orange;">
+                    <div>
+                        <h4>ISBN: ${order.bookIsbn}</h4>
+                        <p>Quantity Incoming: ${order.quantity}</p>
+                        <p>Date: ${new Date(
+                          order.orderDate
+                        ).toLocaleDateString()}</p>
+                    </div>
+                    <button class="btn-submit" style="width: auto; background: green;" onclick="confirmOrder(${
+                      order.orderId
+                    })">
+                        Confirm Receipt
+                    </button>
+                </div>
+            `;
+          container.innerHTML += card;
+        });
+      });
+
+      async function confirmOrder(id) {
+        const res = await fetch(
+          `http://localhost:8080/api/manager/orders/confirm/${id}`,
+          { method: "POST" }
+        );
+        const text = await res.text();
+        alert(text);
+        location.reload();
+      }
+    </script>
+    
     <div class="container">
-        <h1>Pending Publisher Orders</h1>
-        
-        <div class="order-card">
-            <div class="order-info">
-                <h4>Order #9921 - Pearson Education</h4>
-                <p>Book: <strong>Database Systems</strong> (ISBN: 978-3-16-148410-0)</p>
-                <p>Quantity Ordered: 50 Copies</p>
-                <span class="badge">Pending Arrival</span>
-            </div>
-            <form action="#" method="POST">
-                <input type="hidden" name="order_id" value="9921">
-                <button type="submit" class="btn-submit" style="background: #10b981; margin:0;">Confirm Receipt</button>
-            </form>
+      <h1>Pending Publisher Orders</h1>
+
+      <div class="order-card">
+        <div class="order-info">
+          <h4>Order #9921 - Pearson Education</h4>
+          <p>
+            Book: <strong>Database Systems</strong> (ISBN: 978-3-16-148410-0)
+          </p>
+          <p>Quantity Ordered: 50 Copies</p>
+          <span class="badge">Pending Arrival</span>
         </div>
+        <form action="#" method="POST">
+          <input type="hidden" name="order_id" value="9921" />
+          <button
+            type="submit"
+            class="btn-submit"
+            style="background: #10b981; margin: 0"
+          >
+            Confirm Receipt
+          </button>
+        </form>
+      </div>
     </div>
-</body>
+  </body>
 </html>
