@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Book</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <img src="assets/img/logo.png" alt="Alexandria Books">
+      </a>
+        <div class="nav-links">
+            <a href="admin_dashboard.html">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container" style="max-width: 800px;">
+            <h2>Add New Book</h2>
+            <form id="add-book-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" name="isbn" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Author(s) (comma separated)</label>
+                        <input type="text" id="authors-input" placeholder="e.g. John Doe, Jane Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Publisher Name</label>
+                        <input type="text" name="publisherName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Publication Date</label>
+                        <input type="date" name="publicationYear" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Selling Price ($)</label>
+                        <input type="number" step="0.01" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="Science">Science</option>
+                            <option value="Art">Art</option>
+                            <option value="Religion">Religion</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" name="stockQuantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Threshold</label>
+                        <input type="number" name="threshold" placeholder="e.g. 5" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Add Book to Database</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById("add-book-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const book = Object.fromEntries(formData.entries());
+
+            // Convert authors string to List<String>
+            const authorsStr = document.getElementById("authors-input").value;
+            book.authors = authorsStr.split(",").map(s => s.trim()).filter(s => s.length > 0);
+
+            // Convert publication date (YYYY-MM-DD) to year integer expected by backend
+            let pubRaw = formData.get('publicationYear');
+            if (pubRaw && pubRaw.includes('-')) {
+                book.publicationYear = parseInt(pubRaw.split('-')[0]);
+            } else {
+                book.publicationYear = parseInt(pubRaw) || 0;
+            }
+
+            // Send publisher as an object so backend can read publisher.name
+            const publisherName = formData.get('publisherName') || '';
+            book.publisher = { name: publisherName };
+
+            try {
+                const res = await fetch("http://localhost:8080/api/books/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(book)
+                });
+                const text = await res.text();
+                alert(text);
+                if(text.includes("Success")) window.location.href = "admin_dashboard.html";
+            } catch (err) { console.error(err); alert("Error connecting to server"); }
+        });
+    </script>
+</body>
+</html>

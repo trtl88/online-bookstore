@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Shopping Cart</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .cart-summary { background: white; padding: 1.5rem; margin-top: 2rem; text-align: right; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+       <a href="index.html" class="logo">
+            <img src="assets/img/logo.png" alt="Alexandria Books">
+       </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html">Continue Shopping</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart-table-body">
+                </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <h3>Total Amount: <span id="cart-total" style="color: var(--primary); font-size: 1.5rem;">$0.00</span></h3>
+            <p style="color: #666; margin-bottom: 1rem;">Taxes and shipping calculated at checkout</p>
+            
+            <a href="#" onclick="clearCart()" class="btn-submit btn-danger" style="width: auto; padding: 0.8rem 2rem; margin-right: 1rem;">Clear Cart</a>
+            
+            <a href="checkout.html" class="btn-submit" style="width: auto; padding: 0.8rem 2rem;">
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>
