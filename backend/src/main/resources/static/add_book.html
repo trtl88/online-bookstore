@@ -74,7 +74,7 @@
             e.preventDefault();
             const formData = new FormData(e.target);
             const book = Object.fromEntries(formData.entries());
-            
+
             // Convert authors string to List<String>
             const authorsStr = document.getElementById("authors-input").value;
             book.authors = authorsStr.split(",").map(s => s.trim()).filter(s => s.length > 0);

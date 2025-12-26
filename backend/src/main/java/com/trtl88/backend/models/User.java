@@ -88,4 +88,17 @@ public class User {
     public boolean isAdmin() {
         return isAdmin;
     }
+
+    public boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    // Jackson may also look for setAdmin when JSON property is 'admin'
+    public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
+    }
 }

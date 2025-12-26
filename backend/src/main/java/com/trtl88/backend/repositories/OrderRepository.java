@@ -58,7 +58,7 @@ public class OrderRepository {
             order.setUsername(rs.getString("username"));
             order.setOrderDate(rs.getDate("order_date"));
             return order;
-        });
+        }, username);
     }
     // ... inside OrderRepository class ...
 

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Confirm Publisher Orders</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/admin.css" /> </head>
+  <body>
+    <nav class="navbar">
+      <a href="admin_dashboard.html" class="logo">
+         <img src="assets/img/logo.png" alt="Alexandria Books">
+      </a>
+      <div class="nav-links">
+        <a href="admin_dashboard.html">Back to Dashboard</a>
+      </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Pending Publisher Orders</h1>
+        <div id="orders-container"></div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("orders-container");
+        const res = await fetch("http://localhost:8080/api/manager/orders/pending");
+        const orders = await res.json();
+
+        if (orders.length === 0)
+          container.innerHTML = "<p>No pending orders.</p>";
+
+        orders.forEach((order) => {
+          const card = `
+                <div class="order-card">
+                    <div>
+                        <h4>ISBN: ${order.bookIsbn}</h4>
+                        <p>Quantity Incoming: ${order.quantity}</p>
+                        <p>Date: ${new Date(order.orderDate).toLocaleDateString()}</p>
+                    </div>
+                    <button class="btn-submit" style="width: auto; background: var(--success);" onclick="confirmOrder(${order.orderId})">
+                        Confirm Receipt
+                    </button>
+                </div>
+            `;
+          container.innerHTML += card;
+        });
+      });
+
+      async function confirmOrder(id) {
+        const res = await fetch(`http://localhost:8080/api/manager/orders/confirm/${id}`, { method: "POST" });
+        const text = await res.text();
+        alert(text);
+        location.reload();
+      }
+    </script>
+  </body>
+</html>

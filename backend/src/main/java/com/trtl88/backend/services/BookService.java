@@ -36,12 +36,15 @@ public class BookService {
      * Get a single book's details (e.g., when clicking on a book).
      */
     public Book getBookByIsbn(String isbn) {
-        Book book = bookRepository.searchBooks(isbn).get(0);
-        if (book != null) {
-            return book;
-        } else {
+        List<Book> list = bookRepository.searchBooks(isbn);
+        if (list == null || list.isEmpty()) {
             throw new RuntimeException("Book not found with ISBN: " + isbn);
         }
+        Book book = list.get(0);
+        // populate authors for detail view
+        List<String> authors = bookRepository.findAuthorsByIsbn(book.getIsbn());
+        book.setAuthorNames(authors);
+        return book;
 
     }
 
@@ -68,6 +71,17 @@ public class BookService {
         }
 
         // 4. Save to Database
+        // Ensure publisher exists: frontend may send publisher name inside Book.publisher
+        try {
+            if (book.getPublisherId() == 0 && book.getPublisher() != null && book.getPublisher().getName() != null) {
+                int pid = bookRepository.findOrCreatePublisher(book.getPublisher().getName());
+                book.setPublisherId(pid);
+            }
+        } catch (Exception e) {
+            // If anything goes wrong resolving publisher, return an error to the caller
+            return "Error: Unable to resolve or create publisher: " + e.getMessage();
+        }
+
         int result = bookRepository.save(book);
 
         if (result > 0) {
@@ -99,14 +113,36 @@ public class BookService {
      * [cite_start]* [cite: 45] "User can search for a book by ISBN and title"
      */
     public List<Book> searchBooks(String query) {
-        // Null/empty-safe search. The repository-level `searchBooks` already
-        // supports searching by ISBN, title, category, author or publisher,
-        // so delegate to it after trimming the input. If the query is empty
-        // return all books to avoid surprising empty results.
-        if (query == null || query.trim().isEmpty()) {
+        return searchBooks(query, null);
+    }
+
+    // Overloaded search that accepts optional category filter
+    public List<Book> searchBooks(String query, String category) {
+        // Trim inputs
+        String q = (query == null) ? "" : query.trim();
+        String cat = (category == null) ? "" : category.trim();
+
+        // If both empty, return all books
+        if (q.isEmpty() && cat.isEmpty()) {
             return bookRepository.findAll();
         }
-        return bookRepository.searchBooks(query.trim());
+
+        List<Book> books;
+        if (!q.isEmpty() && !cat.isEmpty()) {
+            // Search within category
+            books = bookRepository.searchBooks(q, cat);
+        } else if (!q.isEmpty()) {
+            books = bookRepository.searchBooks(q);
+        } else {
+            books = bookRepository.findByCategory(cat);
+        }
+
+        if (books == null || books.isEmpty()) return books;
+        for (Book b : books) {
+            List<String> authors = bookRepository.findAuthorsByIsbn(b.getIsbn());
+            b.setAuthorNames(authors);
+        }
+        return books;
     }
 
     /**

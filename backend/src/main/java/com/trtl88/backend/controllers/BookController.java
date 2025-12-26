@@ -30,8 +30,8 @@ public class BookController {
     // 2. SEARCH BOOKS (Search Bar)
     // Usage: GET http://localhost:8080/api/books/search?query=Harry
     @GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam String query) {
-        return bookService.searchBooks(query);
+    public List<Book> searchBooks(@RequestParam String query, @RequestParam(required = false) String category) {
+        return bookService.searchBooks(query, category);
     }
 
     // 3. GET BOOKS BY CATEGORY (Filter)

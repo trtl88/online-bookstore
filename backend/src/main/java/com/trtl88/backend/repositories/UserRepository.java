@@ -24,14 +24,14 @@ public class UserRepository {
                 +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-                user.getUsername(),
-                user.getPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getShippingAddress(),
-                user.isAdmin());
+            user.getUsername(),
+            user.getPassword(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhoneNumber(),
+            user.getShippingAddress(),
+            user.isAdmin());
     }
 
     // 2. LOGIN: Find user by username

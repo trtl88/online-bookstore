@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css"> </head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="assets/img/logo.png" alt="Alexandria Books">
+        </a>
+        <div class="nav-links">
+            <a href="#" onclick="logout()" class="btn" style="background: #ef4444;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Welcome, Administrator</h1>
+        <div class="admin-grid">
+            
+            <div class="admin-card">
+                <h3>Manage Books</h3>
+                <p>Add new books or edit existing stock levels.</p>
+                <br>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="add_book.html" class="btn-submit" style="display:block; text-decoration:none; text-align: center;">Add New Book</a>
+                    <a href="edit_book.html" class="btn-submit" style="display:block; text-decoration:none; text-align: center; background-color: #4b5563;">Modify Existing Book</a>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>Publisher Orders</h3>
+                <p>Confirm incoming orders from publishers.</p>
+                <br>
+                <a href="confirm_orders.html" class="btn-submit" style="display:inline-block; text-decoration:none;">View Pending Orders</a>
+            </div>
+            
+            <div class="admin-card">
+                <h3>System Reports</h3>
+                <p>View sales history and top customers.</p>
+                <br>
+                <a href="reports.html" class="btn-submit" style="display:inline-block; text-decoration:none;">View Reports</a>
+            </div>
+
+             <div class="admin-card">
+                <h3>Manage Users</h3>
+                <p>View customers and promote them to managers.</p>
+                <br>
+                <a href="manage_users.html" class="btn-submit" style="display:inline-block; text-decoration:none;">View Customers</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

@@ -30,7 +30,7 @@ if (signupForm && window.location.pathname.includes("signup.html")) {
       });
       const text = await response.text();
       alert(text);
-      if (text.includes("Success")) window.location.href = "login.html";
+      if (response.ok && text.includes("Success")) window.location.href = "login.html";
     } catch (error) {
       console.error(error);
       alert("Error connecting to server.");
@@ -53,21 +53,23 @@ if (loginForm && window.location.pathname.includes("login.html")) {
         body: JSON.stringify(loginRequest),
       });
 
-      // If backend returns empty body (login failed), avoid calling json()
-      const text = await response.text();
-      if (!text) {
-        alert("Invalid Username or Password");
+      // If login failed, show server-provided message or a generic one
+      if (!response.ok) {
+        const text = await response.text().catch(() => '');
+        alert(text || 'Invalid Username or Password');
         return;
       }
-      const user = JSON.parse(text);
+
+      // Successful login -> parse JSON
+      const user = await response.json();
 
       if (user) {
         // SAVE USER TO BROWSER STORAGE
         localStorage.setItem("user", JSON.stringify(user));
         alert("Login Successful!");
 
-        // Redirect based on role (backend serializes boolean as 'admin')
-        if (user.admin) {
+        // Redirect based on role (supports `admin` or `isAdmin`)
+        if (user.admin || user.isAdmin) {
           window.location.href = "admin_dashboard.html";
         } else {
           window.location.href = "index.html";
@@ -99,12 +101,20 @@ function renderNav() {
                  `<a href="cart.html">Cart (<span id="cart-count">0</span>)</a>` +
                  '<a href="edit_profile.html">Profile</a>' +
                  '<a href="#" onclick="logout()">Logout</a>';
-      if (user.admin) {
+      if (user.admin || user.isAdmin) {
         html += '<a href="admin_dashboard.html">Admin</a>' +
                 '<a href="add_book.html">Add Book</a>' +
                 '<a href="manage_users.html">Manage Users</a>';
       }
       nav.innerHTML = html;
+      // update cart count immediately
+      const countEl = document.getElementById('cart-count');
+      if (countEl && user.username) {
+        fetch(`http://localhost:8080/api/cart/${encodeURIComponent(user.username)}`)
+          .then(r => r.json())
+          .then(items => { countEl.textContent = items.length; })
+          .catch(() => {});
+      }
     } else {
       nav.innerHTML = '<a href="index.html">Home</a>' +
                        '<a href="cart.html">Cart (<span id="cart-count">0</span>)</a>' +
