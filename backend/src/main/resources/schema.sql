@@ -1,30 +1,22 @@
--- 0. CLEANUP
-DROP TABLE IF EXISTS shopping_cart;;
-DROP TABLE IF EXISTS publisher_orders;;
-DROP TABLE IF EXISTS order_items;;
-DROP TABLE IF EXISTS orders;;
-DROP TABLE IF EXISTS book_authors;;
-DROP TABLE IF EXISTS book;;
-DROP TABLE IF EXISTS author;;
-DROP TABLE IF EXISTS publisher;;
-DROP TABLE IF EXISTS users;;
+-- 0. SAFE SCHEMA BOILERPLATE
+-- Tables are created with IF NOT EXISTS so re-running this file is non-destructive.
 DROP TRIGGER IF EXISTS before_book_update;;
 DROP TRIGGER IF EXISTS after_book_update;;
 
 -- 1. CREATE TABLES
-CREATE TABLE publisher (
+CREATE TABLE IF NOT EXISTS publisher (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(255),
     phone_number VARCHAR(20)
 );;
 
-CREATE TABLE author (
+CREATE TABLE IF NOT EXISTS author (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 );;
 
-CREATE TABLE book (
+CREATE TABLE IF NOT EXISTS book (
     isbn VARCHAR(20) PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
     publication_year INT,
@@ -36,7 +28,7 @@ CREATE TABLE book (
     FOREIGN KEY (publisher_id) REFERENCES publisher(id)
 );;
 
-CREATE TABLE book_authors (
+CREATE TABLE IF NOT EXISTS book_authors (
     isbn VARCHAR(20),
     author_id INT,
     PRIMARY KEY (isbn, author_id),
@@ -44,7 +36,7 @@ CREATE TABLE book_authors (
     FOREIGN KEY (author_id) REFERENCES author(id)
 );;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(100) NOT NULL,
     first_name VARCHAR(50),
@@ -55,14 +47,14 @@ CREATE TABLE users (
     is_admin BOOLEAN DEFAULT FALSE
 );;
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50),
     order_date DATE,
     FOREIGN KEY (username) REFERENCES users(username)
 );;
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     order_id INT,
     book_isbn VARCHAR(20),
     quantity INT,
@@ -71,7 +63,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (book_isbn) REFERENCES book(isbn)
 );;
 
-CREATE TABLE publisher_orders (
+CREATE TABLE IF NOT EXISTS publisher_orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     book_isbn VARCHAR(20),
     quantity INT DEFAULT 10,
@@ -80,7 +72,7 @@ CREATE TABLE publisher_orders (
     FOREIGN KEY (book_isbn) REFERENCES book(isbn)
 );;
 
-CREATE TABLE shopping_cart (
+CREATE TABLE IF NOT EXISTS shopping_cart (
     username VARCHAR(50),
     book_isbn VARCHAR(20),
     quantity INT DEFAULT 1,
@@ -90,6 +82,7 @@ CREATE TABLE shopping_cart (
 );;
 
 -- 2. TRIGGERS
+-- Recreate triggers safely
 CREATE TRIGGER before_book_update 
 BEFORE UPDATE ON book 
 FOR EACH ROW 

@@ -3,11 +3,12 @@
 
 :root {
     /* --- THEME COLORS --- */
-    --primary: #2563eb;       /* BRIGHT BLUE */
-    --primary-dark: #1e40af;  
-    --secondary: #db2777;     /* PINK */
-    --dark: #0f172a;          
-    --light: #f1f5f9;         /* Light Gray/Blue background */
+    --bg: #ffd4d4;           /* Page background (user requested) */
+    --primary: #0f172a;      /* High-contrast dark for text/buttons */
+    --primary-dark: #0b1220; /* Darker for hover */
+    --secondary: #db2777;    /* Accent/Pink */
+    --dark: #0f172a;         
+    --light: #f1f5f9;        /* Legacy light variable */
     --white: #ffffff;         
     --border: #e2e8f0;        /* Light Border */
     --success: #10b981;       /* Green */
@@ -18,23 +19,24 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
 
 body { 
-    background-color: var(--light); 
+    background-color: var(--bg); 
     color: var(--dark); 
     line-height: 1.6; 
 }
 
 /* --- NAVBAR --- */
 .navbar { 
-    background: var(--white); 
+    background: var(--bg); 
     padding: 1rem 2rem; 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    box-shadow: none;
 }
 
-.logo img { height: 50px; width: auto; } /* Adjusted size */
+.logo img { height: 50px; width: auto; background: transparent; display: block; }
+.logo { padding: 0; margin: 0; }
 
 .nav-links a { 
     text-decoration: none; 
