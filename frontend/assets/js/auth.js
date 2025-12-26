@@ -6,7 +6,6 @@ const signupForm = document.getElementById("signup-form") || document.querySelec
 if (signupForm && window.location.pathname.includes("signup.html")) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const formData = new FormData(signupForm);
     const entries = Object.fromEntries(formData.entries());
 

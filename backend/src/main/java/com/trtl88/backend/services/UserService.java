@@ -28,6 +28,8 @@ public class UserService {
             return "Error: Username and Password are required.";
         }
 
+        
+
         // B. Check if username is already taken
         // (We use the findByUsername method you wrote in the Repository)
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {

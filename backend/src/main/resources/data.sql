@@ -12,7 +12,7 @@ INSERT IGNORE INTO author (id, name) VALUES
 
 INSERT IGNORE INTO book (isbn, title, publication_year, price, category, stock_quantity, threshold, publisher_id) VALUES 
 ('978-0439708180', 'Harry Potter and the Sorcerers Stone', 1997, 20.00, 'Science', 50, 5, 1),
-('978-0451524935', '1984', 1949, 15.00, 'History', 3, 5, 1), 
+('978-0451524935', '1984', 1949, 15.00, 'History', 6, 5, 1), 
 ('978-0547928227', 'The Hobbit', 1937, 25.00, 'Geography', 10, 5, 2),
 ('978-0062073488', 'And Then There Were None', 1939, 12.50, 'Art', 20, 5, 2),
 ('978-0553293357', 'Foundation', 1951, 18.00, 'Science', 30, 5, 3);;

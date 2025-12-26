@@ -1,3 +1,14 @@
+USE online_bookstore;;
+DROP TABLE IF EXISTS shopping_cart;;
+DROP TABLE IF EXISTS publisher_orders;;
+DROP TABLE IF EXISTS order_items;;
+DROP TABLE IF EXISTS orders;;
+DROP TABLE IF EXISTS users;;
+DROP TABLE IF EXISTS book_authors;;
+DROP TABLE IF EXISTS book;;
+DROP TABLE IF EXISTS author;;
+DROP TABLE IF EXISTS publisher;;
+
 -- 0. SAFE SCHEMA BOILERPLATE
 -- Tables are created with IF NOT EXISTS so re-running this file is non-destructive.
 DROP TRIGGER IF EXISTS before_book_update;;

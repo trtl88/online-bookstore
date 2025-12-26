@@ -1,6 +1,24 @@
 // assets/js/main.js
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log("Bookstore Frontend Loaded");
+
+    // Check server start time to detect a restart; if changed, clear stored user (force logout)
+    try {
+        const infoRes = await fetch('http://localhost:8080/api/server/info');
+        if (infoRes.ok) {
+            const info = await infoRes.json();
+            const serverStart = String(info.serverStart || '');
+            const seen = localStorage.getItem('serverStart');
+            if (seen !== serverStart) {
+                localStorage.removeItem('user');
+                localStorage.setItem('serverStart', serverStart);
+                if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
+                    window.location.href = 'index.html';
+                    return;
+                }
+            }
+        }
+    } catch (e) { console.warn('Could not fetch server info', e); }
 
     const grid = document.querySelector('.book-grid');
     if (!grid) return;
