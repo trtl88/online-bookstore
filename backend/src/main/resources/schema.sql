@@ -9,8 +9,6 @@ DROP TABLE IF EXISTS book;;
 DROP TABLE IF EXISTS author;;
 DROP TABLE IF EXISTS publisher;;
 
--- 0. SAFE SCHEMA BOILERPLATE
--- Tables are created with IF NOT EXISTS so re-running this file is non-destructive.
 DROP TRIGGER IF EXISTS before_book_update;;
 DROP TRIGGER IF EXISTS after_book_update;;
 
@@ -95,7 +93,6 @@ CREATE TABLE IF NOT EXISTS shopping_cart (
 );;
 
 -- 2. TRIGGERS
--- Recreate triggers safely
 CREATE TRIGGER before_book_update 
 BEFORE UPDATE ON book 
 FOR EACH ROW 
