@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS order_items (
     order_id INT,
     book_isbn VARCHAR(20),
     quantity INT,
+    price_at_purchase DECIMAL(10,2) DEFAULT 0.00,
     PRIMARY KEY (order_id, book_isbn),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (book_isbn) REFERENCES book(isbn)

@@ -87,7 +87,18 @@ if (loginForm && window.location.pathname.includes("login.html")) {
 }
 
 // 3. LOGOUT LOGIC (Attach to any logout button)
-function logout() {
+async function logout() {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.username) {
+      // Attempt to clear server-side shopping cart for this user before logging out
+      await fetch(`http://localhost:8080/api/cart/clear?username=${encodeURIComponent(user.username)}`, {
+        method: 'DELETE'
+      }).catch(() => {});
+    }
+  } catch (e) {
+    // ignore parse errors and continue logout
+  }
   localStorage.removeItem("user");
   try { localStorage.removeItem('userLoginAt'); } catch(e) {}
   window.location.href = "index.html";

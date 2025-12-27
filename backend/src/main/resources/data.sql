@@ -34,11 +34,12 @@ INSERT IGNORE INTO orders (order_id, username, order_date) VALUES
 (2, 'john', CURDATE() - INTERVAL 2 DAY),
 (3, 'jane', CURDATE() - INTERVAL 10 DAY);;
 
-INSERT IGNORE INTO order_items (order_id, book_isbn, quantity) VALUES 
-(1, '9780439708180', 2),
-(1, '9780547928227', 1),
-(2, '9780451524935', 1),
-(3, '9780553293357', 1);;
+-- Seed order items with snapshot price at purchase (matches current book prices)
+INSERT IGNORE INTO order_items (order_id, book_isbn, quantity, price_at_purchase) VALUES 
+(1, '9780439708180', 2, 12.50),
+(1, '9780547928227', 1, 25.00),
+(2, '9780451524935', 1, 15.00),
+(3, '9780553293357', 1, 18.00);;
 
 INSERT IGNORE INTO shopping_cart (username, book_isbn, quantity) VALUES 
 ('john', '9780451524935', 1);;

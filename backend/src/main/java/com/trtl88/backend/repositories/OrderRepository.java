@@ -35,9 +35,12 @@ public class OrderRepository {
 
         // Step C: Loop through Cart Items to save them and update stock
         for (CartItem item : cartItems) {
-            // 1. Add to Order Items
-            String itemSql = "INSERT INTO order_items (order_id, book_isbn, quantity) VALUES (?, ?, ?)";
-            jdbcTemplate.update(itemSql, orderId, item.getBookIsbn(), item.getQuantity());
+            // 1. Read current book price and add to Order Items as snapshot
+            String priceSql = "SELECT price FROM book WHERE isbn = ?";
+            Double priceAtPurchase = jdbcTemplate.queryForObject(priceSql, Double.class, item.getBookIsbn());
+            if (priceAtPurchase == null) priceAtPurchase = 0.0;
+            String itemSql = "INSERT INTO order_items (order_id, book_isbn, quantity, price_at_purchase) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(itemSql, orderId, item.getBookIsbn(), item.getQuantity(), priceAtPurchase);
 
             // 2. Deduct Stock from Book
             String stockSql = "UPDATE book SET stock_quantity = stock_quantity - ? WHERE isbn = ?";
@@ -65,17 +68,17 @@ public class OrderRepository {
     // 3. GET ITEMS FOR A SPECIFIC ORDER
     public List<OrderItemDTO> getOrderItems(Long orderId) {
         String sql = """
-                    SELECT oi.book_isbn, b.title, oi.quantity, b.price
-                    FROM order_items oi
-                    JOIN book b ON oi.book_isbn = b.isbn
-                    WHERE oi.order_id = ?
-                """;
+                SELECT oi.book_isbn, b.title, oi.quantity, oi.price_at_purchase
+                FROM order_items oi
+                JOIN book b ON oi.book_isbn = b.isbn
+                WHERE oi.order_id = ?
+            """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new OrderItemDTO(
-                rs.getString("book_isbn"),
-                rs.getString("title"),
-                rs.getInt("quantity"),
-                rs.getDouble("price")),
-                orderId);
+            rs.getString("book_isbn"),
+            rs.getString("title"),
+            rs.getInt("quantity"),
+            rs.getDouble("price_at_purchase")),
+            orderId);
     }
 }

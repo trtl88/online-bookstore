@@ -24,6 +24,7 @@
                 <tr>
                     <th>Order No</th>
                     <th>Date</th>
+                    <th>Total</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -49,32 +50,63 @@
                 return;
             }
 
-            orders.forEach(order => {
+            // For each order, fetch its items to compute total and render a row with expandable details
+            for (const order of orders) {
+                const itemsRes = await fetch(`http://localhost:8080/api/orders/details/${order.orderId}`);
+                const items = await itemsRes.json();
+                const total = items.reduce((s, it) => s + (it.priceAtPurchase || it.price || 0) * (it.quantity || 1), 0);
+
+                const rowId = `order-row-${order.orderId}`;
+                const detailsId = `order-details-${order.orderId}`;
+
                 const row = `
-                    <tr>
+                    <tr id="${rowId}">
                         <td>#${order.orderId}</td>
                         <td>${order.orderDate}</td>
+                        <td>$${total.toFixed(2)}</td>
                         <td>
                             <button class="btn-submit" 
                                 style="width: auto; padding: 0.5rem 1rem; background: #64748b;"
-                                onclick="viewDetails(${order.orderId})">
+                                onclick="toggleDetails('${detailsId}')">
                                 View Items
                             </button>
                         </td>
                     </tr>
+                    <tr id="${detailsId}" class="order-details-row" style="display:none;">
+                        <td colspan="4">
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead>
+                                    <tr>
+                                        <th>ISBN</th>
+                                        <th>Title</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${items.map(it => `
+                                        <tr>
+                                            <td>${it.bookIsbn}</td>
+                                            <td>${it.title}</td>
+                                            <td>${it.quantity}</td>
+                                            <td>$${(it.priceAtPurchase || it.price || 0).toFixed(2)}</td>
+                                            <td>$${(((it.priceAtPurchase || it.price || 0) * it.quantity) || 0).toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
                 `;
                 tbody.innerHTML += row;
-            });
+            }
         });
 
-        async function viewDetails(orderId) {
-            const res = await fetch(`http://localhost:8080/api/orders/details/${orderId}`);
-            const items = await res.json();
-            let details = "Items in Order #" + orderId + ":\n\n";
-            items.forEach(item => {
-                details += `- ${item.title} (Qty: ${item.quantity}) - $${item.priceAtPurchase}\n`;
-            });
-            alert(details);
+        function toggleDetails(detailsId) {
+            const el = document.getElementById(detailsId);
+            if (!el) return;
+            el.style.display = (el.style.display === 'none' || !el.style.display) ? 'table-row' : 'none';
         }
     </script>
 </body>
