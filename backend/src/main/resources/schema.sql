@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS book (
     isbn VARCHAR(20) PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
     publication_year INT,
+    cover_image VARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
     category VARCHAR(50),
     stock_quantity INT DEFAULT 0,

@@ -45,7 +45,7 @@
 
                 container.innerHTML = `
                     <div style="text-align: center;">
-                        <img src="${book.coverImage || 'assets/img/book_placeholder.jpg'}" alt="Book Cover" style="width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                        <img src="${book.coverImage ? '/' + book.coverImage : '/assets/img/book_placeholder.jpg'}" alt="Book Cover" style="width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
                     </div>
 
                     <div>

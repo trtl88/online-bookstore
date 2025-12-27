@@ -8,6 +8,7 @@ public class Book {
     private String title;
     private List<String> authors;
     private Publisher publisher;
+    private String coverImage;
     private int publicationYear;
     private double price;
     private String category;
@@ -79,6 +80,14 @@ public class Book {
 
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
     }
 
     public void setPrice(double price) {

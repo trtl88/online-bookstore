@@ -5,6 +5,7 @@ import com.trtl88.backend.repositories.BookRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.Year;
 import java.util.List;
 
 @Service
@@ -12,7 +13,6 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    // Constructor Injection (Connects Service to Repository)
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
@@ -22,114 +22,132 @@ public class BookService {
      */
     public List<Book> getAllBooks() {
         List<Book> books = bookRepository.findAll();
-
-        // 2. Loop through them and fill the empty author lists
         for (Book b : books) {
-            List<String> authors = bookRepository.findAuthorsByIsbn(b.getIsbn()); // <--- ADD THIS LINE
+            List<String> authors = bookRepository.findAuthorsByIsbn(b.getIsbn());
             b.setAuthorNames(authors);
         }
-
         return books;
     }
 
     /**
      * Get a single book's details (e.g., when clicking on a book).
+     * Returns null if not found.
      */
     public Book getBookByIsbn(String isbn) {
-        List<Book> list = bookRepository.searchBooks(isbn);
-        if (list == null || list.isEmpty()) {
-            throw new RuntimeException("Book not found with ISBN: " + isbn);
+        String normalizedIsbn = normalizeIsbnDigitsOnly(isbn);
+        if (normalizedIsbn == null || normalizedIsbn.isBlank()) {
+            return null;
         }
-        Book book = list.get(0);
-        // populate authors for detail view
+
+        Book book = bookRepository.findByIsbn(normalizedIsbn);
+        if (book == null) {
+            return null;
+        }
         List<String> authors = bookRepository.findAuthorsByIsbn(book.getIsbn());
         book.setAuthorNames(authors);
         return book;
-
     }
 
     /**
      * ADMIN ONLY: Add a new book to the store.
      * Includes validation logic.
      */
-    @Transactional // <--- Add this annotation
+    @Transactional
     public String addNewBook(Book book) {
-        // 1. Validate Price
-        if (book.getPrice() < 0) {
-            return "Error: Price cannot be negative.";
-        }
+        if (book == null) return "Error: Book payload is missing.";
 
-        // 2. Validate Threshold
-        if (book.getThreshold() < 0) {
-            return "Error: Threshold cannot be negative.";
+        // Normalize ISBN: remove any non-digit characters
+        String rawIsbn = normalizeIsbnDigitsOnly(book.getIsbn());
+        if (!rawIsbn.matches("^\\d{13}$")) {
+            return "Error: ISBN must be 13 digits.";
         }
+        book.setIsbn(rawIsbn);
 
-        // 3. Check if book already exists
-        List<Book> existing = bookRepository.searchBooks(book.getIsbn());
-        if (!existing.isEmpty()) {
-            return "Error: A book with this ISBN already exists.";
-        }
+        // Basic numeric validations
+        if (book.getPrice() < 0) return "Error: Price cannot be negative.";
+        if (book.getThreshold() < 0) return "Error: Threshold cannot be negative.";
+        if (book.getStockQuantity() < 0) return "Error: Stock quantity cannot be negative.";
 
-        // 4. Save to Database
-        // Ensure publisher exists: frontend may send publisher name inside Book.publisher
+        // Basic content validations
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) return "Error: Title is required.";
+        if (book.getAuthors() == null || book.getAuthors().isEmpty()) return "Error: Please provide at least one author.";
+        if (book.getCategory() == null || book.getCategory().trim().isEmpty()) return "Error: Category is required.";
+
+        // Uniqueness check
+        if (bookRepository.existsByIsbn(book.getIsbn())) return "Error: A book with this ISBN already exists.";
+
+        // Publication year
+        int currentYear = Year.now().getValue();
+        if (book.getPublicationYear() > currentYear) return "Error: Publication year cannot be in the future.";
+
+        // Ensure publisher exists or create it when necessary
         try {
-            if (book.getPublisherId() == 0 && book.getPublisher() != null && book.getPublisher().getName() != null) {
-                int pid = bookRepository.findOrCreatePublisher(book.getPublisher().getName());
+            if (book.getPublisherId() == 0 && book.getPublisher() != null) {
+                String pname = book.getPublisher().getName();
+                String paddr = book.getPublisher().getAddress();
+                String pphone = book.getPublisher().getPhoneNumber();
+
+                boolean exists = bookRepository.existsPublisherByName(pname);
+                if (!exists) {
+                    if (pname == null || pname.trim().isEmpty()) {
+                        return "Error: Publisher name is required.";
+                    }
+                    if (paddr == null || paddr.trim().isEmpty() || pphone == null || pphone.trim().isEmpty()) {
+                        return "Error: Publisher not found: please provide publisher address and phone to create a new publisher";
+                    }
+                }
+                int pid = bookRepository.findOrCreatePublisher(pname, paddr, pphone);
                 book.setPublisherId(pid);
             }
         } catch (Exception e) {
-            // If anything goes wrong resolving publisher, return an error to the caller
             return "Error: Unable to resolve or create publisher: " + e.getMessage();
         }
 
         int result = bookRepository.save(book);
-
         if (result > 0) {
             bookRepository.saveAuthors(book.getIsbn(), book.getAuthors());
             return "Success: Book added successfully.";
-        } else {
-            return "Error: Database failed to save the book.";
         }
+        return "Error: Database failed to save the book.";
     }
 
-    /**
-     * ADMIN ONLY: Update an existing book.
-     * Note: If stock drops below threshold, the MySQL Trigger will handle the
-     * auto-order.
-     */
-    @Transactional // <--- Add this here too just in case
+    @Transactional
     public String updateBook(Book book) {
-        // Logic to prevent updating a non-existent book
-        if (bookRepository.searchBooks(book.getIsbn()).isEmpty()) {
-            return "Error: Book not found.";
+        if (book == null) {
+            return "Error: Book payload is missing.";
         }
 
+        String normalizedIsbn = normalizeIsbnDigitsOnly(book.getIsbn());
+        if (normalizedIsbn == null || normalizedIsbn.isBlank()) {
+            return "Error: ISBN is required.";
+        }
+        book.setIsbn(normalizedIsbn);
+
+        if (!bookRepository.existsByIsbn(book.getIsbn())) {
+            return "Error: Book not found.";
+        }
         int result = bookRepository.update(book);
         return (result > 0) ? "Success: Book updated." : "Error: Update failed.";
     }
 
-    /**
-     * Search Feature: Handles searching by Title or ISBN.
-     * [cite_start]* [cite: 45] "User can search for a book by ISBN and title"
-     */
+    private String normalizeIsbnDigitsOnly(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.replaceAll("[^0-9]", "");
+    }
+
     public List<Book> searchBooks(String query) {
         return searchBooks(query, null);
     }
 
-    // Overloaded search that accepts optional category filter
     public List<Book> searchBooks(String query, String category) {
-        // Trim inputs
         String q = (query == null) ? "" : query.trim();
         String cat = (category == null) ? "" : category.trim();
-
-        // If both empty, return all books
-        if (q.isEmpty() && cat.isEmpty()) {
-            return bookRepository.findAll();
-        }
+        if (q.isEmpty() && cat.isEmpty()) return bookRepository.findAll();
 
         List<Book> books;
         if (!q.isEmpty() && !cat.isEmpty()) {
-            // Search within category
             books = bookRepository.searchBooks(q, cat);
         } else if (!q.isEmpty()) {
             books = bookRepository.searchBooks(q);
@@ -145,11 +163,11 @@ public class BookService {
         return books;
     }
 
-    /**
-     * Filter by Category.
-     * [cite_start]* [cite: 46] "User can search for books of a specific Category"
-     */
+    public List<String> getAllPublisherNames() {
+        return bookRepository.findAllPublisherNames();
+    }
+
     public List<Book> getBooksByCategory(String category) {
-        return bookRepository.findByCategory(category.trim());
+        return bookRepository.findByCategory(category == null ? "" : category.trim());
     }
 }
