@@ -8,24 +8,24 @@
 
  :: Spring Boot ::                (v3.5.9)
 
-2025-12-27T03:46:15.115+02:00  INFO 24708 --- [backend] [           main] com.trtl88.backend.BackendApplication    : Starting BackendApplication v0.0.1-SNAPSHOT using Java 23 with PID 24708 (C:\Users\Mohamed\Documents\GitHub\online-bookstore\backend\target\backend-0.0.1-SNAPSHOT.jar started by Mohamed in C:\Users\Mohamed\Documents\GitHub\online-bookstore\backend)
-2025-12-27T03:46:15.117+02:00  INFO 24708 --- [backend] [           main] com.trtl88.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
-2025-12-27T03:46:16.346+02:00  INFO 24708 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-27T03:46:16.375+02:00  INFO 24708 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
-2025-12-27T03:46:16.898+02:00  INFO 24708 --- [backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2025-12-27T03:46:16.914+02:00  INFO 24708 --- [backend] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-27T03:46:16.914+02:00  INFO 24708 --- [backend] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.50]
-2025-12-27T03:46:16.952+02:00  INFO 24708 --- [backend] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-27T03:46:16.953+02:00  INFO 24708 --- [backend] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1780 ms
-2025-12-27T03:46:17.084+02:00  INFO 24708 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-27T03:46:17.317+02:00  INFO 24708 --- [backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1235151c
-2025-12-27T03:46:17.318+02:00  INFO 24708 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-12-27T03:46:17.676+02:00  INFO 24708 --- [backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-27T03:46:17.719+02:00  INFO 24708 --- [backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.39.Final
-2025-12-27T03:46:17.761+02:00  INFO 24708 --- [backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-12-27T03:46:18.065+02:00  INFO 24708 --- [backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-27T03:46:18.140+02:00  WARN 24708 --- [backend] [           main] org.hibernate.dialect.Dialect            : HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
-2025-12-27T03:46:18.160+02:00  INFO 24708 --- [backend] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-12-27T05:03:41.849+02:00  INFO 25784 --- [backend] [           main] com.trtl88.backend.BackendApplication    : Starting BackendApplication v0.0.1-SNAPSHOT using Java 21.0.4 with PID 25784 (G:\Assignments\Database\online-bookstore\backend\target\backend-0.0.1-SNAPSHOT.jar started by LEGION in G:\Assignments\Database\online-bookstore\backend)
+2025-12-27T05:03:41.858+02:00  INFO 25784 --- [backend] [           main] com.trtl88.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-12-27T05:03:43.383+02:00  INFO 25784 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-27T05:03:43.435+02:00  INFO 25784 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 29 ms. Found 0 JPA repository interfaces.
+2025-12-27T05:03:44.474+02:00  INFO 25784 --- [backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-27T05:03:44.498+02:00  INFO 25784 --- [backend] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-27T05:03:44.499+02:00  INFO 25784 --- [backend] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.50]
+2025-12-27T05:03:44.535+02:00  INFO 25784 --- [backend] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-27T05:03:44.536+02:00  INFO 25784 --- [backend] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2532 ms
+2025-12-27T05:03:44.805+02:00  INFO 25784 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-27T05:03:45.409+02:00  INFO 25784 --- [backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32f1fafe
+2025-12-27T05:03:45.411+02:00  INFO 25784 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-27T05:03:50.143+02:00  INFO 25784 --- [backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-27T05:03:50.256+02:00  INFO 25784 --- [backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.39.Final
+2025-12-27T05:03:50.306+02:00  INFO 25784 --- [backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-27T05:03:50.826+02:00  INFO 25784 --- [backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-27T05:03:50.968+02:00  WARN 25784 --- [backend] [           main] org.hibernate.dialect.Dialect            : HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2025-12-27T05:03:51.004+02:00  INFO 25784 --- [backend] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 5.5.5
@@ -33,9 +33,28 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-12-27T03:46:18.439+02:00  INFO 24708 --- [backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-27T03:46:18.442+02:00  INFO 24708 --- [backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-27T03:46:18.602+02:00  WARN 24708 --- [backend] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-27T03:46:18.633+02:00  INFO 24708 --- [backend] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
-2025-12-27T03:46:19.150+02:00  INFO 24708 --- [backend] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2025-12-27T03:46:19.166+02:00  INFO 24708 --- [backend] [           main] com.trtl88.backend.BackendApplication    : Started BackendApplication in 4.468 seconds (process running for 4.932)
+2025-12-27T05:03:51.653+02:00  INFO 25784 --- [backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-27T05:03:51.659+02:00  INFO 25784 --- [backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-27T05:03:52.040+02:00  WARN 25784 --- [backend] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-27T05:03:52.109+02:00  INFO 25784 --- [backend] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-12-27T05:03:53.070+02:00  WARN 25784 --- [backend] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-12-27T05:03:53.073+02:00  INFO 25784 --- [backend] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-27T05:03:53.082+02:00  INFO 25784 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-27T05:03:53.099+02:00  INFO 25784 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-27T05:03:53.121+02:00  INFO 25784 --- [backend] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-27T05:03:53.169+02:00 ERROR 25784 --- [backend] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
