@@ -65,6 +65,19 @@
                    </tbody>
             </table>
         </div>
+
+        <div class="report-section">
+            <h3>Total Number of Times a Specific Book Has Been Ordered</h3>
+            <p>Shows how many replenishment orders were placed for a particular book.</p>
+            <form id="restock-count-form" style="display: flex; gap: 1rem; align-items: flex-end;">
+                <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label>Book ISBN</label>
+                    <input type="text" id="restock-isbn-input" name="isbn" placeholder="13-digit ISBN">
+                </div>
+                <button type="submit" class="btn-submit" style="width: auto; margin: 0;">Get Count</button>
+            </form>
+            <div id="restock-count-result" style="margin-top: 1rem; font-weight: bold; font-size: 1.2rem; color: var(--secondary);"></div>
+        </div>
     </div>
 
     <script src="assets/js/main.js"></script>

@@ -23,16 +23,34 @@
                 <h4 style="margin-bottom: 1rem;">Payment Details</h4>
                 <div class="form-group">
                     <label>Credit Card Number</label>
-                    <input type="text" name="cc" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                    <input
+                        type="text"
+                        id="cc-input"
+                        name="cc"
+                        placeholder="0000 0000 0000 0000"
+                        maxlength="19"
+                        inputmode="numeric"
+                        autocomplete="cc-number"
+                        required
+                    >
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label>Expiry Month</label>
-                        <input type="month" name="expiry" required>
+                        <input type="month" id="expiry-input" name="expiry" autocomplete="cc-exp" required>
                     </div>
                     <div class="form-group">
                         <label>CVV</label>
-                        <input type="text" placeholder="123" maxlength="3" required>
+                        <input
+                            type="text"
+                            id="cvv-input"
+                            name="cvv"
+                            placeholder="123"
+                            maxlength="3"
+                            inputmode="numeric"
+                            autocomplete="cc-csc"
+                            required
+                        >
                     </div>
                 </div>
                 <button type="submit" class="btn-submit" style="margin-top: 1rem;">Pay & Place Order</button>
@@ -42,14 +60,68 @@
 
     <script src="assets/js/main.js"></script>
     <script>
+        const ccInput = document.getElementById('cc-input');
+        const cvvInput = document.getElementById('cvv-input');
+        const expiryInput = document.getElementById('expiry-input');
+
+        // Enforce digits-only as the user types
+        if (ccInput) {
+            ccInput.addEventListener('input', () => {
+                // keep digits only then format as groups of 4
+                const digits = (ccInput.value || '').replace(/\D/g, '').slice(0, 16);
+                const groups = digits.match(/.{1,4}/g) || [];
+                ccInput.value = groups.join(' ');
+            });
+        }
+        if (cvvInput) {
+            cvvInput.addEventListener('input', () => {
+                cvvInput.value = (cvvInput.value || '').replace(/\D/g, '').slice(0, 3);
+            });
+        }
+
+        // Expiry month can't be before current month
+        if (expiryInput) {
+            const now = new Date();
+            const yyyy = String(now.getFullYear());
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            expiryInput.min = `${yyyy}-${mm}`;
+        }
+
         document.getElementById("checkout-form").addEventListener("submit", async (e) => {
             e.preventDefault();
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user) { alert("Please login first."); window.location.href = "login.html"; return; }
 
             const formData = new FormData(e.target);
-            const cc = formData.get("cc");
+            const ccRaw = String(formData.get("cc") || '');
+            const cvvRaw = String(formData.get("cvv") || '');
             let expiryRaw = formData.get("expiry");
+
+            const ccDigits = ccRaw.replace(/\D/g, '');
+            if (!/^\d{16}$/.test(ccDigits)) {
+                alert('Credit card number must be exactly 16 digits.');
+                return;
+            }
+
+            if (!/^\d{3}$/.test(cvvRaw.replace(/\D/g, ''))) {
+                alert('CVV must be exactly 3 digits.');
+                return;
+            }
+
+            // Validate expiry is not before current month
+            if (!expiryRaw || !/^\d{4}-\d{2}$/.test(String(expiryRaw))) {
+                alert('Please select a valid expiry month.');
+                return;
+            }
+            const now = new Date();
+            const nowKey = now.getFullYear() * 100 + (now.getMonth() + 1);
+            const parts = String(expiryRaw).split('-');
+            const expKey = (parseInt(parts[0], 10) * 100) + parseInt(parts[1], 10);
+            if (!Number.isFinite(expKey) || expKey < nowKey) {
+                alert('Expiry month cannot be before today.');
+                return;
+            }
+
             // If browser returns YYYY-MM (type=month), convert to MM/YY for backend
             let expiry = expiryRaw;
             if (expiryRaw && expiryRaw.includes('-')) {
@@ -62,8 +134,9 @@
             // Encode params for URL query string
             const params = new URLSearchParams({
                 username: user.username,
-                cc: cc,
-                expiry: expiry
+                cc: ccDigits,
+                expiry: expiry,
+                cvv: cvvRaw.replace(/\D/g, '')
             });
 
             try {
