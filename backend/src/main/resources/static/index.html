@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Alexandria Bookstore</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+    <img src="assets/img/logo.png" alt="Alexandria Books">
+</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="login.html" class="btn">Login</a>
+            <a href="signup.html" class="btn">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-section" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form id="search-form" action="#" method="GET" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <input id="search-input" type="text" name="search" placeholder="Search by Title, ISBN, or Author..." style="flex: 2; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px;">
+                <select id="category-select" name="category" style="flex: 1; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="">All Categories</option>
+                    <option value="Science">Science</option>
+                    <option value="Art">Art</option>
+                    <option value="Religion">Religion</option>
+                    <option value="History">History</option>
+                    <option value="Geography">Geography</option>
+                </select>
+                <button type="submit" class="btn-submit" style="width: auto; padding: 0 2rem;">Search</button>
+            </form>
+        </div>
+
+        <h2>Featured Books</h2>
+        <div class="book-grid">
+            <!-- Book cards are rendered dynamically from the backend -->
+        </div>
+    </div>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/books.js"></script>
+</body>
+</html>

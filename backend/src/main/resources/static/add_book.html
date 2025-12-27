@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Book</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <img src="assets/img/logo.png" alt="Alexandria Books">
+      </a>
+        <div class="nav-links">
+            <a href="admin_dashboard.html">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container" style="max-width: 800px;">
+            <h2>Add New Book</h2>
+            <form id="add-book-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" name="isbn" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Author(s) (comma separated)</label>
+                        <input type="text" id="authors-input" placeholder="e.g. John Doe, Jane Smith" required>
+                    </div>
+                        <div class="form-group">
+                            <label>Publisher Name</label>
+                            <input list="publisher-list" type="text" name="publisherName" id="publisher-name" required>
+                            <datalist id="publisher-list"></datalist>
+                        </div>
+                        <div id="new-publisher-fields" style="display:none;">
+                            <div class="form-group">
+                                <label>Publisher Address</label>
+                                <input type="text" name="publisherAddress" id="publisher-address">
+                            </div>
+                            <div class="form-group">
+                                <label>Publisher Phone</label>
+                                <input type="tel" name="publisherPhone" id="publisher-phone" pattern="^(0[0-9]{10}|\+[0-9]{11})$" title="Must be 11 digits starting with 0, or 12 digits starting with + (e.g. 01234567890 or +201234567890)" inputmode="numeric">
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label>Publication Date</label>
+                        <input type="date" id="publication-date" name="publicationYear" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Selling Price ($)</label>
+                        <input type="number" step="0.01" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="Science">Science</option>
+                            <option value="Art">Art</option>
+                            <option value="Religion">Religion</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" name="stockQuantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Threshold</label>
+                        <input type="number" name="threshold" placeholder="e.g. 5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cover Image</label>
+                        <input type="file" id="cover-file" name="coverFile" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Add Book to Database</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Populate publisher datalist
+        async function loadPublishers() {
+            try {
+                const res = await fetch('http://localhost:8080/api/books/publishers');
+                if (!res.ok) return;
+                const list = await res.json();
+                const dl = document.getElementById('publisher-list');
+                if (!dl) return;
+                dl.innerHTML = '';
+                list.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    dl.appendChild(opt);
+                });
+            } catch (e) { console.warn(e); }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPublishers();
+
+            // ensure publication date cannot be in the future (set max to today)
+            const pubDateInput = document.getElementById('publication-date');
+            if (pubDateInput) {
+                pubDateInput.max = new Date().toISOString().split('T')[0];
+            }
+
+            const pubInput = document.getElementById('publisher-name') || document.querySelector('input[name="publisherName"]');
+            const newFields = document.getElementById('new-publisher-fields');
+            if (pubInput && newFields) {
+                pubInput.setAttribute('list', 'publisher-list');
+                pubInput.addEventListener('input', () => {
+                    const val = pubInput.value.trim();
+                    const dl = document.getElementById('publisher-list');
+                    const optionExists = dl && Array.from(dl.options).some(o => o.value === val);
+                    newFields.style.display = optionExists ? 'none' : 'block';
+                });
+            }
+
+            // attach submit handler
+            const form = document.getElementById('add-book-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log('add-book form submit handler fired');
+                const submitBtn = form.querySelector('button[type="submit"]');
+                try {
+                    const formData = new FormData(form);
+
+                // Client-side ISBN validation: 13 digits
+                let isbnRaw = formData.get('isbn') || '';
+                // remove any non-digit characters (hyphens, spaces, commas, etc.)
+                isbnRaw = isbnRaw.replace(/\D/g, '');
+                if (!/^\d{13}$/.test(isbnRaw)) { alert('ISBN must be 13 digits'); return; }
+
+                // Publication date cannot be in future (compare full dates) and derive pubYear
+                let pubRaw = formData.get('publicationYear');
+                let pubYear = 0;
+                if (pubRaw) {
+                    const selected = new Date(pubRaw);
+                    const today = new Date();
+                    selected.setHours(0,0,0,0);
+                    today.setHours(0,0,0,0);
+                    if (selected > today) { alert('Publication date cannot be in the future'); return; }
+                    pubYear = selected.getFullYear();
+                }
+
+                // Convert authors
+                const authorsStr = document.getElementById('authors-input').value || '';
+                const authors = authorsStr.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                if (authors.length === 0) { alert('Please provide at least one author'); return; }
+
+                // Build book payload
+                const book = {
+                    isbn: isbnRaw,
+                    title: formData.get('title'),
+                    authors: authors,
+                    publicationYear: pubYear,
+                    price: parseFloat(formData.get('price')) || 0,
+                    category: formData.get('category'),
+                    stockQuantity: parseInt(formData.get('stockQuantity')) || 0,
+                    threshold: parseInt(formData.get('threshold')) || 0,
+                };
+
+                // Basic numeric validations client-side
+                if (book.price < 0) { alert('Price cannot be negative'); return; }
+                if (book.stockQuantity < 0) { alert('Stock quantity cannot be negative'); return; }
+                if (book.threshold < 0) { alert('Threshold cannot be negative'); return; }
+
+                // Publisher object with optional address/phone
+                const pname = formData.get('publisherName') || '';
+                const paddr = formData.get('publisherAddress') || null;
+                const pphone = formData.get('publisherPhone') || null;
+                book.publisher = { name: pname, address: paddr, phoneNumber: pphone };
+
+                // Send book + optional cover file in one multipart request to avoid orphaned uploads
+                const coverInput = document.getElementById('cover-file');
+                const multipart = new FormData();
+                if (coverInput && coverInput.files && coverInput.files.length > 0) {
+                    multipart.append('file', coverInput.files[0]);
+                }
+                multipart.append('book', JSON.stringify(book));
+
+                // disable submit button only once validation passed and we're about to make the request
+                if (submitBtn) submitBtn.disabled = true;
+                try {
+                    const res = await fetch('http://localhost:8080/api/books/addWithCover', { method: 'POST', body: multipart });
+                    const text = await res.text();
+                    alert(text);
+                    if (text.includes('Success')) {
+                        window.location.href = 'admin_dashboard.html';
+                        return;
+                    }
+                } catch (err) {
+                    console.error(err); alert('Error connecting to server');
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+                } catch (handlerErr) {
+                    console.error('Error in add-book submit handler', handlerErr);
+                    alert('Error in client script: ' + handlerErr.message);
+                    const submitBtn2 = form.querySelector('button[type="submit"]');
+                    if (submitBtn2) submitBtn2.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
