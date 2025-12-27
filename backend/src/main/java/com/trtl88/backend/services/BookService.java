@@ -1,12 +1,13 @@
 package com.trtl88.backend.services;
 
-import com.trtl88.backend.models.Book;
-import com.trtl88.backend.repositories.BookRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.time.Year;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.trtl88.backend.models.Book;
+import com.trtl88.backend.repositories.BookRepository;
 
 @Service
 public class BookService {
@@ -122,6 +123,11 @@ public class BookService {
             return "Error: ISBN is required.";
         }
         book.setIsbn(normalizedIsbn);
+
+        // Basic numeric validations
+        if (book.getPrice() < 0) return "Error: Price cannot be negative.";
+        if (book.getThreshold() < 0) return "Error: Threshold cannot be negative.";
+        if (book.getStockQuantity() < 0) return "Error: Stock quantity cannot be negative.";
 
         if (!bookRepository.existsByIsbn(book.getIsbn())) {
             return "Error: Book not found.";
