@@ -66,6 +66,8 @@ if (loginForm && window.location.pathname.includes("login.html")) {
       if (user) {
         // SAVE USER TO BROWSER STORAGE
         localStorage.setItem("user", JSON.stringify(user));
+        // record login time to allow controlled server-restart logout
+        try { localStorage.setItem('userLoginAt', String(Date.now())); } catch(e) {}
         alert("Login Successful!");
 
         // Redirect based on role (supports `admin` or `isAdmin`)
@@ -87,6 +89,7 @@ if (loginForm && window.location.pathname.includes("login.html")) {
 // 3. LOGOUT LOGIC (Attach to any logout button)
 function logout() {
   localStorage.removeItem("user");
+  try { localStorage.removeItem('userLoginAt'); } catch(e) {}
   window.location.href = "index.html";
 }
 

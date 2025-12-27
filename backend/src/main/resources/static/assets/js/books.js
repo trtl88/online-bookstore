@@ -78,7 +78,6 @@ async function loadBooks(query = "", category = "") {
     }
 }
 // frontend/assets/js/books.js
-const BOOK_API = "http://localhost:8080/api/books";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadBooks(); // Load all books by default

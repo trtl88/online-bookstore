@@ -10,13 +10,21 @@ document.addEventListener('DOMContentLoaded', async function() {
             const serverStart = String(info.serverStart || '');
             const seen = localStorage.getItem('serverStart');
             if (seen !== serverStart) {
-                // new server start: clear user and update seen token
-                localStorage.removeItem('user');
-                localStorage.setItem('serverStart', serverStart);
-                // if not on home, redirect to home
-                if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
-                    window.location.href = 'index.html';
-                    return; // reload after redirect
+                // serverStart changed — only force logout if server restarted after the user logged in
+                const userLoginAt = Number(localStorage.getItem('userLoginAt') || '0');
+                const shouldLogout = userLoginAt === 0 ? true : (Number(serverStart) > userLoginAt);
+                if (shouldLogout) {
+                    localStorage.removeItem('user');
+                    try { localStorage.removeItem('userLoginAt'); } catch(e) {}
+                    localStorage.setItem('serverStart', serverStart);
+                    // if not on home, redirect to home
+                    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
+                        window.location.href = 'index.html';
+                        return; // reload after redirect
+                    }
+                } else {
+                    // user logged in after restart — just update token
+                    localStorage.setItem('serverStart', serverStart);
                 }
             }
         }
@@ -129,11 +137,18 @@ document.addEventListener('DOMContentLoaded', async function() {
             const serverStart = String(info.serverStart || '');
             const seen = localStorage.getItem('serverStart');
             if (seen !== serverStart) {
-                localStorage.removeItem('user');
-                localStorage.setItem('serverStart', serverStart);
-                if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
-                    window.location.href = 'index.html';
-                    return;
+                const userLoginAt = Number(localStorage.getItem('userLoginAt') || '0');
+                const shouldLogout = userLoginAt === 0 ? true : (Number(serverStart) > userLoginAt);
+                if (shouldLogout) {
+                    localStorage.removeItem('user');
+                    try { localStorage.removeItem('userLoginAt'); } catch(e) {}
+                    localStorage.setItem('serverStart', serverStart);
+                    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                } else {
+                    localStorage.setItem('serverStart', serverStart);
                 }
             }
         }

@@ -73,10 +73,7 @@
                         <label>Minimum Threshold</label>
                         <input type="number" name="threshold" placeholder="e.g. 5" required>
                     </div>
-                    <div class="form-group">
-                        <label>Cover Image</label>
-                        <input type="file" id="cover-file" name="coverFile" accept="image/*">
-                    </div>
+                    <!-- Cover image upload removed: cover is not added via the form anymore -->
                 </div>
                 <button type="submit" class="btn-submit">Add Book to Database</button>
             </form>
@@ -178,18 +175,14 @@
                 const pphone = formData.get('publisherPhone') || null;
                 book.publisher = { name: pname, address: paddr, phoneNumber: pphone };
 
-                // Send book + optional cover file in one multipart request to avoid orphaned uploads
-                const coverInput = document.getElementById('cover-file');
-                const multipart = new FormData();
-                if (coverInput && coverInput.files && coverInput.files.length > 0) {
-                    multipart.append('file', coverInput.files[0]);
-                }
-                multipart.append('book', JSON.stringify(book));
-
-                // disable submit button only once validation passed and we're about to make the request
+                // Submit book payload as JSON (no cover upload)
                 if (submitBtn) submitBtn.disabled = true;
                 try {
-                    const res = await fetch('http://localhost:8080/api/books/addWithCover', { method: 'POST', body: multipart });
+                    const res = await fetch('http://localhost:8080/api/books/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(book)
+                    });
                     const text = await res.text();
                     alert(text);
                     if (text.includes('Success')) {
