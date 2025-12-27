@@ -152,9 +152,7 @@ public class BookRepository {
             book.getPublisherId(), book.getIsbn());
     }
 
-    // ---------------------------------------------------------
-    // FUNCTION 1: Save Authors (Complex MySQL Logic)
-    // ---------------------------------------------------------
+    // SAVE AUTHORS FOR A BOOK
     public void saveAuthors(String isbn, List<String> authors) {
         if (authors == null || authors.isEmpty())
             return;
@@ -177,9 +175,7 @@ public class BookRepository {
         }
     }
 
-    // ---------------------------------------------------------
-    // FUNCTION 2: Get Authors (Simple Join)
-    // ---------------------------------------------------------
+    // Get authors for a specific book by ISBN
     public List<String> findAuthorsByIsbn(String isbn) {
         String sql = "SELECT a.name FROM author a " +
             "JOIN book_authors ba ON a.id = ba.author_id " +
@@ -214,11 +210,6 @@ public class BookRepository {
             // Make sure this matches the type in your Book.java (Long vs Int)
             book.setPublisherId(rs.getInt("publisher_id"));
             book.setPublisherName(rs.getString("publisher_name"));
-            // DELETED: book.setAuthorNames(...)
-            // Why? Because we fill this in the Service layer using
-            // bookRepository.findAuthorsByIsbn()
-            // DELETED: book.setPublisherName(...)
-            // Why? Because this column doesn't exist in the 'book' table.
 
             return book;
         }

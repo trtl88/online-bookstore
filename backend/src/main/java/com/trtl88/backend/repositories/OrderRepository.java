@@ -63,7 +63,6 @@ public class OrderRepository {
             return order;
         }, username);
     }
-    // ... inside OrderRepository class ...
 
     // 3. GET ITEMS FOR A SPECIFIC ORDER
     public List<OrderItemDTO> getOrderItems(Long orderId) {

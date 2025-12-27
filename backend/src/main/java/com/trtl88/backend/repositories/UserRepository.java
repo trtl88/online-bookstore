@@ -39,7 +39,6 @@ public class UserRepository {
         String sql = "SELECT * FROM users WHERE username = ?";
         try {
             // Note: BeanPropertyRowMapper automatically maps "is_admin" (SQL) to "isAdmin"
-            // (Java)
             User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
             return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
@@ -61,10 +60,6 @@ public class UserRepository {
                 user.getShippingAddress(),
                 user.getUsername());
     }
-
-    // -------------------------------------------------------------------------
-    // NEW METHODS ADDED FOR REQUIREMENTS
-    // -------------------------------------------------------------------------
 
     // 4. PROMOTE USER: Manager can promote a customer to manager status
     public int promoteUser(String username) {

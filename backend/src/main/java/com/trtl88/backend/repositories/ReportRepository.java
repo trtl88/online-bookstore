@@ -41,8 +41,7 @@ public class ReportRepository {
         return res != null ? res : 0.0;
     }
 
-    // 3. TOP 5 CUSTOMERS (SIMPLIFIED!)
-    // Removed 'JOIN users'. We just use 'o.username' directly from the orders table.
+    // 3. TOP 5 CUSTOMERS 
     public List<TopCustomer> getTop5Customers() {
         String sql = """
             SELECT o.username, SUM(b.price * oi.quantity) as total_spent
@@ -79,7 +78,7 @@ public class ReportRepository {
         );
     }
 
-    // 5. RESTOCK COUNT (Already simplest possible)
+    // 5. RESTOCK COUNT
     public Integer getRestockCount(String isbn) {
         String sql = "SELECT COUNT(*) FROM publisher_orders WHERE book_isbn = ?";
         Integer res = jdbcTemplate.queryForObject(sql, Integer.class, isbn);
