@@ -4,6 +4,16 @@
 
 **Spring Boot 3 (Java 17) + MySQL** — REST APIs + built-in static web UI.
 
+**Contributors:**
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/trtl88"><img src="https://github.com/trtl88.png" width="80px;" alt=""/><br /><sub><b>trtl88</b></sub></a></td>
+    <td align="center"><a href="https://github.com/boghdadii"><img src="https://github.com/boghdadii.png" width="80px;" alt=""/><br /><sub><b>boghdadii</b></sub></a></td>
+    <td align="center"><a href="https://github.com/yassinmady"><img src="https://github.com/yassinmady.png" width="80px;" alt=""/><br /><sub><b>yassinmady</b></sub></a></td>
+    <td align="center"><a href="https://github.com/iMohamedsh"><img src="https://github.com/iMohamedsh.png" width="80px;" alt=""/><br /><sub><b>iMohamedsh</b></sub></a></td>
+  </tr>
+</table>
+
 ![Java](https://img.shields.io/badge/Java-17-informational)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.x-brightgreen)
 ![Database](https://img.shields.io/badge/Database-MySQL-blue)
