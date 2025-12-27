@@ -10,6 +10,9 @@ if (window.location.pathname.includes("reports.html")) {
     const dateSalesResultEl = document.getElementById("date-sales-result");
     const topCustomersBody = document.getElementById("top-customers-body");
     const topBooksBody = document.getElementById("top-books-body");
+    const restockCountForm = document.getElementById("restock-count-form");
+    const restockIsbnInput = document.getElementById("restock-isbn-input");
+    const restockCountResultEl = document.getElementById("restock-count-result");
 
     const setTableEmptyRow = (tbody, message, colSpan) => {
       if (!tbody) return;
@@ -130,6 +133,35 @@ if (window.location.pathname.includes("reports.html")) {
         console.error("Failed to load top books", e);
         setTableEmptyRow(topBooksBody, "Failed to load", 2);
       }
+    }
+
+    // 5) Replenishment order count for a specific book
+    if (restockCountForm && restockIsbnInput && restockCountResultEl) {
+      restockCountForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // normalize to digits-only ISBN to match backend storage style
+        let isbnRaw = (restockIsbnInput.value || "").trim();
+        isbnRaw = isbnRaw.replace(/\D/g, "");
+        if (!/^\d{13}$/.test(isbnRaw)) {
+          restockCountResultEl.textContent = "Please enter a 13-digit ISBN.";
+          return;
+        }
+
+        restockCountResultEl.textContent = "Loading...";
+
+        try {
+          const res = await fetch(
+            `${REPORT_API}/restock-count?isbn=${encodeURIComponent(isbnRaw)}`
+          );
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const countText = await res.text();
+          restockCountResultEl.textContent = `Total replenishment orders: ${countText}`;
+        } catch (e) {
+          console.error("Failed to load restock count", e);
+          restockCountResultEl.textContent = "Failed to load";
+        }
+      });
     }
   });
 }
