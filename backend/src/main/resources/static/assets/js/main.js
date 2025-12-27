@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                 const img = document.createElement('img');
                 // ensure we use an absolute path for images so resolution is consistent
-                const cover = book.coverImage || 'assets/img/book1.jpg';
+                const cover = book.coverImage || 'assets/img/book_placeholder.jpg';
                 img.src = cover.startsWith('/') ? cover : ('/' + cover);
                 img.alt = book.title || 'Book';
 
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 card.className = 'book-card';
 
                 const img = document.createElement('img');
-                const cover2 = book.coverImage || 'assets/img/book1.jpg';
+                const cover2 = book.coverImage || 'assets/img/book_placeholder.jpg';
                 img.src = cover2.startsWith('/') ? cover2 : ('/' + cover2);
                 img.alt = book.title || 'Book';
 

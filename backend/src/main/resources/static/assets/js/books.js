@@ -55,8 +55,12 @@ async function loadBooks(query = "", category = "") {
             // Disable button if out of stock
             const disabled = book.stockQuantity > 0 ? "" : "disabled style='background: grey; cursor: not-allowed;'";
 
+            // compute cover src (frontend expects relative path like 'assets/img/..' or 'uploads/...')
+            const cover = book.coverImage || 'assets/img/book_placeholder.jpg';
+            const coverSrc = cover.startsWith('/') ? cover : ('/' + cover);
+
             card.innerHTML = `
-                <img src="assets/img/book_placeholder.jpg" alt="${book.title}">
+                <img src="${coverSrc}" alt="${book.title}">
                 <h3>${book.title}</h3>
                 <p style="color: #666; font-size: 0.9rem;">${book.category}</p>
                 <p style="font-weight: bold; color: var(--primary); margin: 0.5rem 0;">$${book.price}</p>
@@ -130,8 +134,12 @@ async function loadBooks(query = "", category = "") {
             // Disable button if out of stock
             const disabled = book.stockQuantity > 0 ? "" : "disabled style='background: grey; cursor: not-allowed;'";
 
+            // compute cover src (frontend expects relative path like 'assets/img/..' or 'uploads/...')
+            const cover = book.coverImage || 'assets/img/book_placeholder.jpg';
+            const coverSrc = cover.startsWith('/') ? cover : ('/' + cover);
+
             card.innerHTML = `
-                <img src="assets/img/book_placeholder.jpg" alt="${book.title}">
+                <img src="${coverSrc}" alt="${book.title}">
                 <h3>${book.title}</h3>
                 <p style="color: #666; font-size: 0.9rem;">${book.category}</p>
                 <p style="font-weight: bold; color: var(--primary); margin: 0.5rem 0;">$${book.price}</p>
