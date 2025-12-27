@@ -5,14 +5,14 @@ INSERT IGNORE INTO publisher (id, name, address, phone_number) VALUES
 
 INSERT IGNORE INTO author (id, name) VALUES 
 (1, 'J.K. Rowling'),
-(2, 'George Orwell'),
+(2, 'John Doe'),
 (3, 'J.R.R. Tolkien'),
 (4, 'Prof. Yousry Taha'),
 (5, 'Isaac Asimov');;
 
 INSERT IGNORE INTO book (isbn, title, publication_year, price, category, stock_quantity, threshold, publisher_id, cover_image) VALUES 
 ('9780062073488', 'Database Systems', 1997, 20.00, 'Science', 50, 5, 1, 'assets/img/book1.jpg'),
-('9780451524935', '1984', 1949, 15.00, 'History', 6, 5, 1, 'assets/img/book_placeholder.jpg'), 
+('9780451524935', 'Modern Art History', 1949, 15.00, 'History', 6, 5, 1, 'assets/img/book2.jpg'), 
 ('9780547928227', 'The Hobbit', 1937, 25.00, 'Geography', 10, 5, 2, 'assets/img/book_placeholder.jpg'),
 ('9780439708180', 'And Then There Were None', 1939, 12.50, 'Art', 20, 5, 2, 'assets/img/book_placeholder.jpg'),
 ('9780553293357', 'Foundation', 1951, 18.00, 'Science', 30, 5, 3, 'assets/img/book_placeholder.jpg');;

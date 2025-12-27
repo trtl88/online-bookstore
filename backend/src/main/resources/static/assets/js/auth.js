@@ -97,18 +97,21 @@ function logout() {
 function renderNav() {
   const nav = document.querySelector('.nav-links');
   if (!nav) return;
-  try {
+    try {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.username) {
+      // Build nav so that Logout is always last
       let html = '<a href="index.html">Home</a>' +
                  `<a href="cart.html">Cart (<span id="cart-count">0</span>)</a>` +
                  '<a href="edit_profile.html">Profile</a>' +
-                 '<a href="#" onclick="logout()">Logout</a>';
+                 '<a href="order_history.html">Order History</a>';
       if (user.admin || user.isAdmin) {
         html += '<a href="admin_dashboard.html">Admin</a>' +
                 '<a href="add_book.html">Add Book</a>' +
                 '<a href="manage_users.html">Manage Users</a>';
       }
+      // Logout should be the final item
+      html += '<a href="#" onclick="logout()">Logout</a>';
       nav.innerHTML = html;
       // update cart count immediately
       const countEl = document.getElementById('cart-count');
@@ -119,9 +122,8 @@ function renderNav() {
           .catch(() => {});
       }
     } else {
-      nav.innerHTML = '<a href="index.html">Home</a>' +
-                       '<a href="cart.html">Cart (<span id="cart-count">0</span>)</a>' +
-                       '<a href="login.html" class="btn">Login</a>' +
+      // Not logged in: hide Home, Cart, and Order History per request; show only auth links
+      nav.innerHTML = '<a href="login.html" class="btn">Login</a>' +
                        '<a href="signup.html" class="btn">Sign Up</a>';
     }
   } catch (e) {

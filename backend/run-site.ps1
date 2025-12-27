@@ -50,13 +50,11 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-# Ensure logs folder exists
-if (-not (Test-Path logs)) { New-Item -ItemType Directory -Path logs | Out-Null }
+Write-Host "Starting backend jar (detached). Output will not be redirected to a file."
+# Start the jar directly without redirecting stdout/stderr to a log file.
+Start-Process -FilePath 'java' -ArgumentList '-jar', 'target\\backend-0.0.1-SNAPSHOT.jar' -WorkingDirectory $backendDir -WindowStyle Hidden
 
-Write-Host "Starting backend jar (detached). Logs -> logs\\backend.log"
-Start-Process -FilePath cmd.exe -ArgumentList '/c', "java -jar target\\backend-0.0.1-SNAPSHOT.jar > logs\\backend.log 2>&1" -WorkingDirectory $backendDir -WindowStyle Hidden
-
-Write-Host "Started. Follow logs with: Get-Content backend\\logs\\backend.log -Wait"
+Write-Host "Started (detached). No backend log file will be created by this script."
 
 Pop-Location
 
