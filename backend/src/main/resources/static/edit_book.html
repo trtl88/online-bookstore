@@ -36,15 +36,15 @@
                     </div>
                     <div class="form-group">
                         <label>Stock Quantity</label>
-                        <input type="number" name="stockQuantity" id="input-stock" required>
+                        <input type="number" name="stockQuantity" id="input-stock" required min="0" step="1" inputmode="numeric">
                     </div>
                     <div class="form-group">
                         <label>Price ($)</label>
-                        <input type="number" step="0.01" name="price" id="input-price" required>
+                        <input type="number" step="0.01" name="price" id="input-price" required min="0">
                     </div>
                     <div class="form-group">
                         <label>Threshold</label>
-                         <input type="number" name="threshold" id="input-threshold" required>
+                         <input type="number" name="threshold" id="input-threshold" required min="0" step="1" inputmode="numeric">
                     </div>
                     <div class="form-group">
                         <label>Category</label>
@@ -98,8 +98,33 @@
         // 2. Submit Updates
         document.getElementById("edit-form").addEventListener("submit", async (e) => {
             e.preventDefault();
+
+            // Basic client-side validation (still validated on backend too)
+            const priceVal = Number(document.getElementById('input-price').value);
+            const stockVal = Number(document.getElementById('input-stock').value);
+            const thresholdVal = Number(document.getElementById('input-threshold').value);
+
+            if (!Number.isFinite(priceVal) || priceVal < 0) {
+                alert('Price must be 0 or greater.');
+                return;
+            }
+            if (!Number.isFinite(stockVal) || stockVal < 0 || !Number.isInteger(stockVal)) {
+                alert('Stock quantity must be a non-negative integer.');
+                return;
+            }
+            if (!Number.isFinite(thresholdVal) || thresholdVal < 0 || !Number.isInteger(thresholdVal)) {
+                alert('Threshold must be a non-negative integer.');
+                return;
+            }
+
             const formData = new FormData(e.target);
             const book = Object.fromEntries(formData.entries());
+
+            // Ensure numeric fields are numbers (and ints where applicable)
+            book.price = priceVal;
+            book.stockQuantity = parseInt(String(stockVal), 10);
+            book.threshold = parseInt(String(thresholdVal), 10);
+
             // Convert publication date to year integer
             let pubRaw = formData.get('publicationYear');
             if (pubRaw && pubRaw.includes('-')) {
