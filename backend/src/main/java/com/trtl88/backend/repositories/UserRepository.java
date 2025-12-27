@@ -1,13 +1,14 @@
 package com.trtl88.backend.repositories;
 
-import com.trtl88.backend.models.User;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.trtl88.backend.models.User;
 
 @Repository
 public class UserRepository {
@@ -36,7 +37,10 @@ public class UserRepository {
 
     // 2. LOGIN: Find user by username
     public Optional<User> findByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
+        // Alias columns so BeanPropertyRowMapper can map to User fields correctly.
+        // In particular, `phone_no` would map to `phoneNo`, not `phoneNumber`.
+        String sql = "SELECT username, password, first_name, last_name, email, phone_no AS phone_number, shipping_address, is_admin "
+                + "FROM users WHERE username = ?";
         try {
             // Note: BeanPropertyRowMapper automatically maps "is_admin" (SQL) to "isAdmin"
             User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
@@ -70,7 +74,8 @@ public class UserRepository {
     // 5. LIST CUSTOMERS: Needed so the Manager can see who to promote
     // (Excludes existing admins so you don't promote someone twice)
     public List<User> findAllCustomers() {
-        String sql = "SELECT * FROM users WHERE is_admin = 0";
+        String sql = "SELECT username, password, first_name, last_name, email, phone_no AS phone_number, shipping_address, is_admin "
+                + "FROM users WHERE is_admin = 0";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 }

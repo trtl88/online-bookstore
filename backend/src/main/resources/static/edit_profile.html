@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="tel" name="phone" pattern="^(0[0-9]{10}|\+[0-9]{11})$" title="Must be 11 digits starting with 0, or 12 digits starting with + (e.g. 01234567890 or +201234567890)" inputmode="numeric" required>
+                    <input type="tel" name="phoneNumber" id="p-phone" pattern="^(0[0-9]{10}|\+[0-9]{11})$" title="Must be 11 digits starting with 0, or 12 digits starting with + (e.g. 01234567890 or +201234567890)" inputmode="numeric" required>
                 </div>
 
                 <div class="form-group">
@@ -69,12 +69,18 @@
             if (!user) window.location.href = "login.html";
 
             document.getElementById("p-username").value = user.username;
-            document.getElementById("p-password").value = user.password; // Show current password
-            document.getElementById("p-fname").value = user.firstName;
-            document.getElementById("p-lname").value = user.lastName;
-            document.getElementById("p-email").value = user.email;
-            document.getElementById("p-phone").value = user.phoneNumber || '';
-            document.getElementById("p-address").value = user.shippingAddress;
+            // Do not prefill password; leave blank to keep current
+            document.getElementById("p-password").value = "";
+            document.getElementById("p-fname").value = user.firstName || '';
+            document.getElementById("p-lname").value = user.lastName || '';
+            document.getElementById("p-email").value = user.email || '';
+
+            // Support older localStorage keys just in case
+            const phone = user.phoneNumber || user.phone || user.phoneNo || '';
+            const addr = user.shippingAddress || user.address || '';
+            const phoneEl = document.getElementById("p-phone");
+            if (phoneEl) phoneEl.value = phone;
+            document.getElementById("p-address").value = addr;
         });
 
         // 2. Submit Update
@@ -83,8 +89,15 @@
             const formData = new FormData(e.target);
             const updatedUser = Object.fromEntries(formData.entries());
             
+            const existingUser = JSON.parse(localStorage.getItem("user")) || {};
+
             // We must include the username so the backend knows who to update
             updatedUser.username = document.getElementById("p-username").value;
+
+            // If password left blank, keep current password
+            if (!updatedUser.password || String(updatedUser.password).trim() === "") {
+                updatedUser.password = existingUser.password || "";
+            }
 
             try {
                 const res = await fetch("http://localhost:8080/api/users/profile", {
@@ -96,9 +109,12 @@
                 alert(text);
                 
                 if(text.includes("Success")) {
-                    // Update local storage with new info
-                    // Note: We need to handle isAdmin carefully or just re-login
-                    localStorage.setItem("user", JSON.stringify(updatedUser));
+                    // Merge changes into local storage so fields like isAdmin are preserved
+                    const merged = {
+                        ...existingUser,
+                        ...updatedUser
+                    };
+                    localStorage.setItem("user", JSON.stringify(merged));
                 }
             } catch (err) { console.error(err); }
         });
