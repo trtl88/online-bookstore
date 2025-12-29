@@ -93,15 +93,15 @@ CREATE TABLE IF NOT EXISTS shopping_cart (
 );;
 
 -- 2. TRIGGERS
--- CREATE TRIGGER before_book_update 
--- BEFORE UPDATE ON book 
--- FOR EACH ROW 
--- BEGIN 
---     IF NEW.stock_quantity < 0 THEN 
---         SIGNAL SQLSTATE '45000' 
---         SET MESSAGE_TEXT = 'Error: Stock quantity cannot be negative.'; 
---     END IF; 
--- END;;
+CREATE TRIGGER before_book_update 
+BEFORE UPDATE ON book 
+FOR EACH ROW 
+BEGIN 
+    IF NEW.stock_quantity < 0 THEN 
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Error: Stock quantity cannot be negative.'; 
+    END IF; 
+END;;
 
 CREATE TRIGGER after_book_update
 AFTER UPDATE ON book
